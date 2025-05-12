@@ -35,7 +35,7 @@ public class ImagesController {
         Resource image = imagesService.loadImage(type, filename);
 
         MediaType contentType = MediaType.IMAGE_JPEG;
-        try {
+        try {       //  Try reading the file type, if not, then the default file type associated will be JPEG
             String detectedType = Files.probeContentType(image.getFile().toPath());
             if (detectedType != null) {
                 contentType = MediaType.parseMediaType(detectedType);
