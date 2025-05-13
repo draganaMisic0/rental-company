@@ -1,37 +1,106 @@
-<nav>
-  <mat-nav-list>
-      <a mat-list-item routerLink="/manage-vehicles">Manage Vehicles</a>
-      <a mat-list-item routerLink="/manage-users">Manage Users</a>
-      <a mat-list-item routerLink="/manage-manufacturers">Manage Manufacturers</a>
-      <a mat-list-item routerLink="/view-rentals">View Rentals</a>
-      <a mat-list-item routerLink="/report-issues">Report Issues</a>
-      <a mat-list-item routerLink="/statistics">Statistics</a>
-      <a mat-list-item routerLink="/set-rent-prices">Set Rental Prices</a>
-      <a mat-list-item routerLink="/view-vehicles-map">View Vehicle Map</a>
-      <a mat-list-item (click)="logout()">Logout</a>
-    </mat-nav-list>
-</nav>
+<div class="page-container">
+  <mat-sidenav-container class="main-container">
 
-<mat-drawer-container class="example-container" [hasBackdrop]="hasBackdrop.value">
-  <mat-drawer #drawer [mode]="mode.value">I'm a drawer</mat-drawer>
-  <mat-drawer-content>
-    <mat-form-field>
-      <mat-label>Sidenav mode</mat-label>
-      <mat-select #mode value="side">
-        <mat-option value="side">Side</mat-option>
-        <mat-option value="over">Over</mat-option>
-        <mat-option value="push">Push</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Has backdrop</mat-label>
-      <mat-select #hasBackdrop>
-        <mat-option>Unset</mat-option>
-        <mat-option [value]="true">True</mat-option>
-        <mat-option [value]="false">False</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
-  </mat-drawer-content>
-</mat-drawer-container>
-<router-outlet></router-outlet>
+    <!-- Side Navigation -->
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      [mode]="isSmallScreen ? 'over' : 'side'"
+      [opened]="isSidenavOpen"
+    >
+      <!-- Close button inside drawer on mobile -->
+      @if(isSmallScreen) {
+      <button mat-icon-button class="mobile-close-btn" (click)="toggleSidenav()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+
+      <!-- Small-screen user info at top of drawer -->
+      @if(isSmallScreen && user) {
+      <div class="sidenav-user">
+        <img [src]="user.profilePictureUrl" class="avatar-large" alt="Profile" />
+        <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+      </div>
+      }
+
+      <!-- Navigation Items -->
+       <mat-nav-list>
+        <a mat-list-item routerLink="/manage-vehicles">
+          <mat-icon>directions_car</mat-icon>
+          <span>Manage Vehicles</span>
+        </a>
+        <a mat-list-item routerLink="/manage-users">
+          <mat-icon>group</mat-icon>
+          <span>Manage Users</span>
+        </a>
+        <a mat-list-item routerLink="/manage-manufacturers">
+          <mat-icon>build</mat-icon>
+          <span>Manage Manufacturers</span>
+        </a>
+        <a mat-list-item routerLink="/view-rentals">
+          <mat-icon>receipt_long</mat-icon>
+          <span>View Rentals</span>
+        </a>
+        <a mat-list-item routerLink="/report-issues">
+          <mat-icon>report_problem</mat-icon>
+          <span>Report Issues</span>
+        </a>
+        <a mat-list-item routerLink="/statistics">
+          <mat-icon>bar_chart</mat-icon>
+          <span>Statistics</span>
+        </a>
+        <a mat-list-item routerLink="/set-rent-prices">
+          <mat-icon>attach_money</mat-icon>
+          <span>Set Rental Prices</span>
+        </a>
+        <a mat-list-item routerLink="/view-vehicles-map">
+          <mat-icon>map</mat-icon>
+          <span>View Vehicle Map</span>
+        </a>
+        <a mat-list-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+
+    <!-- Main content -->
+    <mat-sidenav-content>
+      <!-- Top toolbar -->
+      <mat-toolbar color="primary" class="top-toolbar">
+        <!-- Hamburger menu on small screens only -->
+      
+        <button mat-icon-button (click)="toggleSidenav()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        
+
+        <!-- Page Title -->
+        <span class="app-title">Rental Service</span>
+
+        <span class="spacer"></span>
+
+        <!-- User info on large screens -->
+        @if(!isSmallScreen && user) {
+        <div class="user-info" [matMenuTriggerFor]="userMenu">
+          <span>{{ user.firstName }} {{ user.lastName }}</span>
+          <img [src]="user.profilePictureUrl" alt="Profile" class="avatar" />
+        </div>
+        }
+
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </mat-toolbar>
+
+      <!-- Routed content -->
+      <div class="main-content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

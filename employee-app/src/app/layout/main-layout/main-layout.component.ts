@@ -14,11 +14,18 @@ import { AsyncPipe } from '@angular/common';
 export class MainLayoutComponent implements OnInit{
 
   isMobile$!: Observable<boolean>;  // Detect screen size for mobile view
-  username: string = 'John Doe';  // Just for demo purposes
-  firstName: string = 'John';
-  lastName: string = 'Doe';
   profilePicUrl: string = 'path/to/profile/pic.jpg';  // Provide your profile image URL
   private router!: Router;
+
+   isSmallScreen = false;
+   isSidenavOpen = true;
+
+  user = {
+    firstName: 'Dragana',
+    lastName: 'Test',
+    username: "dragana_Test",
+    profilePictureUrl: 'https://i.pravatar.cc/40'
+  };
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -27,9 +34,14 @@ export class MainLayoutComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      this.isMobile$ = this.breakpointObserver.observe([Breakpoints.XSmall]).pipe(
-      map(result => result.matches)
-    );
+    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(res => {
+      this.isSmallScreen = res.matches;
+      this.isSidenavOpen = !res.matches;
+    });
+  }
+
+    toggleSidenav() {
+    this.isSidenavOpen = !this.isSidenavOpen;
   }
 
   logout(): void {

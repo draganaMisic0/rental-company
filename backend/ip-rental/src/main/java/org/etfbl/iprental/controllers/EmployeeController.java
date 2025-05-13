@@ -48,10 +48,20 @@ public class EmployeeController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        boolean success = employeeService.verifyEmployeePassword(loginRequest.getUsername(), loginRequest.getPassword());
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        boolean success = false;
+        try{
+            success = employeeService.verifyEmployeePassword(loginRequest.getUsername(), loginRequest.getPassword());
+        }
+        catch(Exception ex)
+        {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+
+
         if (success) {
-            return ResponseEntity.ok("Login successful");
+            EmployeeDTO foundEmployee = employeeService.getEmployeeByUsername(loginRequest.getUsername());
+            return ResponseEntity.ok(foundEmployee);
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
