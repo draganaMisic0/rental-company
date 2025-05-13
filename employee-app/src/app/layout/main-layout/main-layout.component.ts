@@ -7,7 +7,7 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [MaterialModule, RouterOutlet, RouterLink, AsyncPipe],
+  imports: [MaterialModule, RouterOutlet, RouterLink],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css'
 })

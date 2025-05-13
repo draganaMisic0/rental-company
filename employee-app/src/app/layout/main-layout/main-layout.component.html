@@ -37,7 +37,7 @@
           <mat-icon>build</mat-icon>
           <span>Manage Manufacturers</span>
         </a>
-        <a mat-list-item routerLink="/view-rentals">
+        <a mat-list-item routerLink="/manage-rentals">
           <mat-icon>receipt_long</mat-icon>
           <span>View Rentals</span>
         </a>
@@ -49,18 +49,21 @@
           <mat-icon>bar_chart</mat-icon>
           <span>Statistics</span>
         </a>
-        <a mat-list-item routerLink="/set-rent-prices">
-          <mat-icon>attach_money</mat-icon>
-          <span>Set Rental Prices</span>
-        </a>
-        <a mat-list-item routerLink="/view-vehicles-map">
+        <a mat-list-item routerLink="/vehicles-map-view">
           <mat-icon>map</mat-icon>
           <span>View Vehicle Map</span>
         </a>
+        <a mat-list-item routerLink="/set-rental-prices">
+          <mat-icon>attach_money</mat-icon>
+          <span>Set Rental Prices</span>
+        </a>
+
+        
         <a mat-list-item (click)="logout()">
           <mat-icon>logout</mat-icon>
           <span>Logout</span>
         </a>
+        
       </mat-nav-list>
     </mat-sidenav>
 
