@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
-import { LoginRequest } from '../login/login-page/login-request';
+import { LoginRequest } from '../../models/requests/login-request';
 import { catchError, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { config_params } from '../../config/config_params';
+import { EmployeeData } from '../../models/employee-data';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private apiUrl = 'http://localhost:8080/employees'; // Base URL of your Spring API
+  
+  
+
+  private apiUrl = `${config_params.protocol}://${config_params.address}:${config_params.port}/employees`; // Base URL of your Spring API
 
   constructor(private http: HttpClient) {}
 
-  login(credentials: LoginRequest): Observable<string> {
-    return this.http.post(`${this.apiUrl}/login`, credentials, { responseType: 'text' })
+  
+  login(credentials: LoginRequest): Observable<EmployeeData> {
+    return this.http.post<EmployeeData>(`${this.apiUrl}/login`, credentials, {responseType: 'json'})
       .pipe(catchError(this.handleError))
   }
 

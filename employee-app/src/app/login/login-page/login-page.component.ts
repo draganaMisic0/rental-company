@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -16,7 +17,10 @@ export class LoginPageComponent {
 
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private loginService: LoginService) {
+  constructor(private fb: FormBuilder, 
+    private loginService: LoginService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(3)]]
@@ -39,7 +43,10 @@ export class LoginPageComponent {
 
     const formData = this.loginForm.value;
     this.loginService.login({username: this.username?.value, password: this.password?.value}).subscribe(
-      {next: (data)=> {console.log("SUCCESS: " + data)},
+      {next: (data)=> {
+        localStorage.setItem('userData', JSON.stringify(data));
+        this.router.navigate(['/'])
+      },
       error: (error)=> {console.error(error);}
       }
     );
