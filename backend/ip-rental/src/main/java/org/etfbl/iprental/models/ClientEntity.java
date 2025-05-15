@@ -35,7 +35,7 @@ public class ClientEntity {
     @Column(name = "username", nullable = false, length = 45)
     private String username;
 
-    @Column(name = "password", nullable = false, length = 200)
+    @Column(name = "password", nullable = false, length = 256)
     private String password;
 
     @Column(name = "passport_number", length = 45)

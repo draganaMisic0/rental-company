@@ -4,6 +4,7 @@ package org.etfbl.iprental.services;
 import org.etfbl.iprental.models.ClientEntity;
 import org.etfbl.iprental.models.DTO.ClientDTO;
 import org.etfbl.iprental.models.requests.ClientRequest;
+import org.etfbl.iprental.models.requests.ClientStatusChangeRequest;
 import org.etfbl.iprental.models.requests.LoginRequest;
 import org.etfbl.iprental.repositories.ClientRepository;
 import org.etfbl.iprental.utils.mappers.ClientMapper;
@@ -75,6 +76,17 @@ public class ClientService {
 
     public void deleteAllClients() {
         clientRepository.deleteAll();
+    }
+
+    public ClientDTO changeClientStatus(Integer id, ClientStatusChangeRequest request) {
+        ClientEntity client = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+
+        Byte valueToSet = request.getNewStatus() ? (byte)1 : (byte)0;
+
+        client.setActive(valueToSet);
+
+        return clientMapper.toDto(clientRepository.save(client));
     }
 }
 
