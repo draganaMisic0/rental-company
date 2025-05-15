@@ -1,1 +1,63 @@
-<p>manage-manufacturers works!</p>
+<div class="container">
+
+    <button mat-fab extended  color="primary" (click)="openAddDialog()" class="add-button" style="margin: 20px 5px">
+      <mat-icon>add</mat-icon>
+        Add Manufacturer
+    </button>
+  
+    <mat-divider></mat-divider>
+  
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" style="width: 100%">
+  
+        <!-- Columns Definitions -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let element">{{element.name}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
+          <td mat-cell *matCellDef="let element">{{element.country}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+          <td mat-cell *matCellDef="let element">{{element.address}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+          <td mat-cell *matCellDef="let element">{{element.phone}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="fax">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fax</th>
+          <td mat-cell *matCellDef="let element">{{element.fax}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let element">{{element.email}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="warn" (click)="deleteManufacturer(element.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="openEditDialog(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+          </td>
+        </ng-container>
+  
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+      </table>
+    </div>
+  </div>
+  

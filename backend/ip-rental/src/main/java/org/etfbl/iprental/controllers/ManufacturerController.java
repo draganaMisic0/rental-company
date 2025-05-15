@@ -33,11 +33,11 @@ public class ManufacturerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ManufacturerEntity> updateManufacturer(@RequestBody ManufacturerEntity manufacturer) {
-        if(manufacturer.getId() == null || manufacturer.getId() == 0){
+    public ResponseEntity<ManufacturerEntity> updateManufacturer(@RequestBody ManufacturerEntity manufacturer, @PathVariable Integer id) {
+        if(id == null || id == -1){
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(manufacturerService.updateManufacturer(manufacturer.getId(), manufacturer));
+        return ResponseEntity.ok(manufacturerService.updateManufacturer(id, manufacturer));
     }
 
     @DeleteMapping("/{id}")
