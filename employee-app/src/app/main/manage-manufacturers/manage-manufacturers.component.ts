@@ -72,9 +72,6 @@ export class ManageManufacturersComponent implements OnInit {
       width: '25vw',
       data: manufacturer
     });
-
-    console.log("OPENED MANUFACTURER")
-    console.log(manufacturer);
   
     dialogRef.afterClosed().subscribe((result: Manufacturer) => {
       if (result) {
