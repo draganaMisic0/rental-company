@@ -5,12 +5,16 @@ import { ActivatedRoute } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { ScooterService } from '../../../services/scooter.service';
+import { BicycleService } from '../../../services/bicycle.service';
+import { CarService } from '../../../services/car.service';
 
 @Component({
   selector: 'app-vehicle-details',
   imports: [MaterialModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule],
   templateUrl: './vehicle-details.component.html',
-  styleUrl: './vehicle-details.component.css'
+  styleUrl: './vehicle-details.component.css',
+  providers: [BicycleService, CarService, ScooterService]
 })
 export class VehicleDetailComponent implements OnInit {
   vehicle: any;
@@ -20,10 +24,18 @@ export class VehicleDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     //private service: VehicleService
-  ) {}
+  ) {
+    
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
+ 
+  }
 
   ngOnInit() {
     const { type, id } = this.route.snapshot.params;
+    console.log("Type & Id:");
+    console.log(type);
+    console.log(id);
   //  this.service.get(type, id).subscribe(v => this.vehicle = v);
   //  this.service.getFaults(type, id).subscribe(f => this.faults = f);
   //  this.service.getRentals(type, id).subscribe(r => this.rentals = r);

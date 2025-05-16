@@ -10,6 +10,8 @@ import { ReportIssuesComponent } from './main/report-issues/report-issues.compon
 import { SetRentalPricesComponent } from './main/set-rental-prices/set-rental-prices.component';
 import { VehiclesMapViewComponent } from './main/vehicles-map-view/vehicles-map-view.component';
 import { ManageVehiclesComponent } from './main/manage-vehicles/manage-vehicles.component';
+import { VehicleDetailComponent } from './main/manage-vehicles/vehicle-details/vehicle-details.component';
+import { NotFoundComponent } from './main/not-found/not-found.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginPageComponent },
@@ -20,6 +22,7 @@ export const routes: Routes = [
     canActivate: [],  // Optional guard to ensure the user is logged in
     children: [
       { path: 'manage-vehicles', component: ManageVehiclesComponent },
+      { path: 'vehicles/details/:type/:id', component: VehicleDetailComponent},
       { path: 'manage-users', component: ManageUsersComponent },
       { path: 'manage-manufacturers', component: ManageManufacturersComponent },
       { path: 'manage-rentals', component: ManageRentalsComponent },
@@ -27,6 +30,7 @@ export const routes: Routes = [
       { path: 'report-issues', component: ReportIssuesComponent },
       { path: 'set-rental-prices', component: SetRentalPricesComponent },
       { path: 'vehicles-map-view', component: VehiclesMapViewComponent },
+      { path: 'not-found', component: NotFoundComponent},
       
       // other routes for authenticated pages...
       { path: '', redirectTo: '/manage-vehicles', pathMatch: 'full' }

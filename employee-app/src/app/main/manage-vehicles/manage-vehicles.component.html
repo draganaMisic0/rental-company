@@ -47,9 +47,13 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let el">
+          <button mat-icon-button color="primary" (click)="goToVehicleDetails(el)">
+          <mat-icon>list_alt</mat-icon>
+          </button>
           <button mat-icon-button color="warn" (click)="onDelete(el.id)">
             <mat-icon>delete</mat-icon>
           </button>
+          
         </td>
       </ng-container>
 
@@ -88,6 +92,9 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let el">
+          <button mat-icon-button color="primary" (click)="goToVehicleDetails(el)">
+            <mat-icon>list_alt</mat-icon>
+          </button>
           <button mat-icon-button color="warn" (click)="onDelete(el.id)">
             <mat-icon>delete</mat-icon>
           </button>
@@ -124,6 +131,9 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let el">
+          <button mat-icon-button color="primary" (click)="goToVehicleDetails(el)">
+            <mat-icon>list_alt</mat-icon>
+          </button>
           <button mat-icon-button color="warn" (click)="onDelete(el.id)">
             <mat-icon>delete</mat-icon>
           </button>

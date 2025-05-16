@@ -34,11 +34,7 @@ export class VehicleFormDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     console.log(data);
-    const isEdit = !!this.data.vehicle;
-    console.log(isEdit);
-    this.title = isEdit
-      ? `Edit ${this.data.type.slice(0, -1).toUpperCase()}`
-      : `Add New ${this.data.type.slice(0, -1).toUpperCase()}`;
+    this.title = `Add New ${this.data.type.slice(0, -1).toUpperCase()}`;
         // base fields
     this.form = this.fb.group({
       model: [this.data.vehicle?.model || '', Validators.required],
@@ -54,9 +50,6 @@ export class VehicleFormDialogComponent implements OnInit {
 
   ngOnInit() {
     
-
-
-
     // type-specific
     switch (this.data.type) {
       case 'bicycles':

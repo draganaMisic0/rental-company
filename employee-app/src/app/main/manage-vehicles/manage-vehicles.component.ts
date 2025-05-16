@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MaterialModule } from '../../material/material-imports';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { VehicleFormDialogComponent } from './vehicle-form-dialog/vehicle-form-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicles-management',
@@ -19,6 +20,8 @@ import { VehicleFormDialogComponent } from './vehicle-form-dialog/vehicle-form-d
   providers: [BicycleService, CarService, ScooterService]
 })
 export class ManageVehiclesComponent implements OnInit {
+  router!: Router;
+  
   // which type is selected
   selectedType: 'bicycles' | 'cars' | 'scooters' = 'cars';
 
@@ -36,8 +39,11 @@ export class ManageVehiclesComponent implements OnInit {
     private bicycleService: BicycleService,
     private carService:     CarService,
     private scooterService: ScooterService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    
+  ) {
+    this.router = inject(Router);
+  }
 
   ngOnInit() {
     this.loadTable();
@@ -121,5 +127,9 @@ export class ManageVehiclesComponent implements OnInit {
 
   onFileSelected(evt: any) {
     // same CSV-upload logic, dispatch to the right bulk-upload endpoint
+  }
+
+  goToVehicleDetails(vehicle: any) {
+    this.router.navigate(['/vehicles/details/', this.selectedType, vehicle.id]);
   }
 }
