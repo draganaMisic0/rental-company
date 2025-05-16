@@ -1,5 +1,6 @@
 package org.etfbl.iprental.services;
 
+import jakarta.transaction.Transactional;
 import org.etfbl.iprental.models.DTO.VehicleDTO;
 import org.etfbl.iprental.models.ManufacturerEntity;
 import org.etfbl.iprental.models.VehicleEntity;
@@ -41,14 +42,15 @@ public class VehicleService {
         return vehicleMapper.toDto(vehicle);
     }
 
-    public VehicleDTO addVehicle(VehicleDTO dto) {
+    @Transactional
+    public VehicleEntity addVehicle(VehicleDTO dto) {
         ManufacturerEntity manufacturer = manufacturerRepo.findById(dto.getManufacturerId())
                 .orElseThrow(() -> new RuntimeException("Manufacturer not found"));
 
         VehicleEntity vehicle = vehicleMapper.toEntity(dto, manufacturer);
 
-        vehicleRepo.save(vehicle);
-        return vehicleMapper.toDto(vehicle);
+        VehicleEntity returnedVehicle = vehicleRepo.save(vehicle);
+        return (returnedVehicle);
     }
 
     public void deleteVehicle(String id) {

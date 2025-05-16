@@ -2,6 +2,7 @@ package org.etfbl.iprental.controllers;
 
 
 import org.etfbl.iprental.models.DTO.VehicleDTO;
+import org.etfbl.iprental.models.VehicleEntity;
 import org.etfbl.iprental.services.VehicleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,8 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<VehicleDTO> createVehicle(@RequestBody VehicleDTO vehicleDTO) {
-        VehicleDTO created = vehicleService.addVehicle(vehicleDTO);
+    public ResponseEntity<VehicleEntity> createVehicle(@RequestBody VehicleDTO vehicleDTO) {
+        VehicleEntity created = vehicleService.addVehicle(vehicleDTO);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 

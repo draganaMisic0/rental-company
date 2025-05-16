@@ -1,3 +1,16 @@
-.sample-div {
-    background-color: lime;
+.container {
+  .button-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .table-container {
+    width: 100%;
+    overflow: auto;
+  }
+  .add-button {
+    margin-left: auto;
+    width: 10vw;
+  }
 }

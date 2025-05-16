@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginPageComponent } from './login/login-page/login-page.component';
 import { AppComponent } from './app.component';
-import { ManageVehiclesComponent } from './main/manage-vehicles/manage-vehicles.component';
 import { ManageUsersComponent } from './main/manage-users/manage-users.component';
 import { ManageManufacturersComponent } from './main/manage-manufacturers/manage-manufacturers.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
@@ -10,6 +9,7 @@ import { StatisticsComponent } from './main/statistics/statistics.component';
 import { ReportIssuesComponent } from './main/report-issues/report-issues.component';
 import { SetRentalPricesComponent } from './main/set-rental-prices/set-rental-prices.component';
 import { VehiclesMapViewComponent } from './main/vehicles-map-view/vehicles-map-view.component';
+import { ManageVehiclesComponent } from './main/manage-vehicles/manage-vehicles.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginPageComponent },

@@ -26,7 +26,7 @@ public class VehicleEntity {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @Column(name = "photo_url", nullable = false, length = 256)
+    @Column(name = "photo_url", nullable = true, length = 256)
     private String photoUrl;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

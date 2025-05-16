@@ -1,1 +1,36 @@
-<p>vehicle-details works!</p>
+@if(this.vehicle) {
+    <div class="container">
+  <h2>{{ vehicle.model }} Details</h2>
+  <mat-tab-group>
+    <mat-tab label="Info">
+      <div>
+        <p><strong>Purchase Price:</strong> {{ vehicle.purchasePrice }}</p>
+        @if(vehicle.purchaseDate)
+        {
+             <p><strong>Purchase Date:</strong> {{ vehicle.purchaseDate }}</p>
+        }
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Faults">
+      <button mat-raised-button color="primary" (click)="addFault()">Add Fault</button>
+      <mat-list>
+        @for(f of faults; track f.id)
+        {
+            <mat-list-item>
+          {{ f.description }}
+          <button mat-icon-button color="warn" (click)="deleteFault(f.id)"><mat-icon>delete</mat-icon></button>
+        </mat-list-item>
+        }
+        
+      </mat-list>
+    </mat-tab>
+
+    <mat-tab label="Rentals">
+      <table mat-table [dataSource]="rentals" class="mat-elevation-z8">
+        <!-- definirati kolone za Rentals -->
+      </table>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+}

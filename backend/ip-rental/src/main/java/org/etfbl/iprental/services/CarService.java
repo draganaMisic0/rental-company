@@ -1,11 +1,13 @@
 package org.etfbl.iprental.services;
 
+import jakarta.transaction.Transactional;
 import org.etfbl.iprental.models.CarEntity;
 import org.etfbl.iprental.models.DTO.CarDTO;
 import org.etfbl.iprental.models.VehicleEntity;
 import org.etfbl.iprental.repositories.CarRepository;
 import org.etfbl.iprental.repositories.VehicleRepository;
 import org.etfbl.iprental.utils.mappers.CarMapper;
+import org.etfbl.iprental.utils.mappers.VehicleMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,18 +17,32 @@ import java.util.stream.Collectors;
 public class CarService {
     private final CarRepository carRepository;
     private final VehicleRepository vehicleRepository;
+    private final VehicleService vehicleService;
     private final CarMapper carMapper;
+    private final VehicleMapper vehicleMapper;
 
-    public CarService(CarRepository carRepository, VehicleRepository vehicleRepository, CarMapper carMapper) {
+    public CarService(CarRepository carRepository, VehicleRepository vehicleRepository, VehicleService vehicleService, CarMapper carMapper, VehicleMapper vehicleMapper) {
         this.carRepository = carRepository;
         this.vehicleRepository = vehicleRepository;
+        this.vehicleService = vehicleService;
         this.carMapper = carMapper;
+        this.vehicleMapper = vehicleMapper;
     }
 
     /// Adds both to the vehicle table, and the Car table its corresponding data
+    @Transactional
     public CarDTO addCar(CarDTO carDTO) {
         VehicleEntity vehicle = carMapper.toVehicleEntity(carDTO);
-        VehicleEntity savedVehicle = vehicleRepository.save(vehicle);
+        if(carDTO.getStatus() == null)
+        {
+            vehicle.setStatus("available");
+        }
+        else{
+            vehicle.setStatus(carDTO.getStatus());
+        }
+
+        VehicleEntity savedVehicle = vehicleService.addVehicle(vehicleMapper.toDto(vehicle));
+                //= vehicleRepository.save(vehicle);
 
         CarEntity car = carMapper.toCarEntity(carDTO);
         car.setVehicle(savedVehicle);

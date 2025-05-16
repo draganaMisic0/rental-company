@@ -2,6 +2,7 @@ package org.etfbl.iprental.utils.mappers;
 
 import org.etfbl.iprental.models.CarEntity;
 import org.etfbl.iprental.models.DTO.CarDTO;
+import org.etfbl.iprental.models.ManufacturerEntity;
 import org.etfbl.iprental.models.VehicleEntity;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,12 @@ public class CarMapper {
         vehicle.setStatus(dto.getStatus());
         vehicle.setPhotoUrl(dto.getPhotoUrl());
         vehicle.setRentalPrice(dto.getRentalPrice());
+
+        ManufacturerEntity tempEntity = new ManufacturerEntity();
+        tempEntity.setId(dto.getManufacturerId());
+
+        vehicle.setManufacturer(tempEntity);
+
         return vehicle;
     }
 

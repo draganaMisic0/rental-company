@@ -1,1 +1,138 @@
-<p class="sample-div">manage-vehicles works!</p>
+<div class="container">
+  <div class="button-group">
+    <mat-button-toggle-group
+      [(ngModel)]="selectedType"
+      (ngModelChange)="loadTable()"
+      aria-label="Vehicle Type"
+    >
+      <mat-button-toggle value="bicycles">Bicycle</mat-button-toggle>
+      <mat-button-toggle value="cars">Car</mat-button-toggle>
+      <mat-button-toggle value="scooters">Scooter</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <button mat-fab color="primary" (click)="onAdd()" class="add-button">
+      <mat-icon style="margin-right: 10px;">add</mat-icon> Add New
+    </button>
+
+    <input type="file" accept=".csv" (change)="onFileSelected($event)" />
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="table-container" [ngSwitch]="selectedType">
+
+    <!-- BICYCLES TABLE -->
+    <table
+      *ngSwitchCase="'bicycles'"
+      mat-table
+      [dataSource]="dataSourceBicycles"
+      matSort
+      class="mat-elevation-z8"
+    >
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+        <td mat-cell *matCellDef="let el">{{ el.model }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="purchasePrice">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Purchase Price</th>
+        <td mat-cell *matCellDef="let el">{{ el.purchasePrice }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="range">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Range</th>
+        <td mat-cell *matCellDef="let el">{{ el.range }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let el">
+          <button mat-icon-button color="warn" (click)="onDelete(el.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="bicycleColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: bicycleColumns;" (click)="onRowClick(row)"></tr>
+    </table>
+
+    <!-- CARS TABLE -->
+    <table
+      *ngSwitchCase="'cars'"
+      mat-table
+      [dataSource]="dataSourceCars"
+      matSort
+      class="mat-elevation-z8"
+    >
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+        <td mat-cell *matCellDef="let el">{{ el.model }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="purchasePrice">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Purchase Price</th>
+        <td mat-cell *matCellDef="let el">{{ el.purchasePrice }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="purchaseDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Purchase Date</th>
+        <td mat-cell *matCellDef="let el">{{ el.purchaseDate }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+        <td mat-cell *matCellDef="let el">{{ el.description }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let el">
+          <button mat-icon-button color="warn" (click)="onDelete(el.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="carColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: carColumns;" (click)="onRowClick(row)"></tr>
+    </table>
+
+    <!-- SCOOTERS TABLE -->
+    <table
+      *ngSwitchCase="'scooters'"
+      mat-table
+      [dataSource]="dataSourceScooters"
+      matSort
+      class="mat-elevation-z8"
+    >
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+        <td mat-cell *matCellDef="let el">{{ el.model }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="purchasePrice">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Purchase Price</th>
+        <td mat-cell *matCellDef="let el">{{ el.purchasePrice }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="maxSpeed">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Max Speed</th>
+        <td mat-cell *matCellDef="let el">{{ el.maxSpeed }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let el">
+          <button mat-icon-button color="warn" (click)="onDelete(el.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="scooterColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: scooterColumns;" (click)="onRowClick(row)"></tr>
+    </table>
+
+  </div>
+</div>
