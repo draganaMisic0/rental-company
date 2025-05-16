@@ -3,6 +3,7 @@ package org.etfbl.iprental.services;
 import jakarta.transaction.Transactional;
 import org.etfbl.iprental.models.CarEntity;
 import org.etfbl.iprental.models.DTO.CarDTO;
+import org.etfbl.iprental.models.ManufacturerEntity;
 import org.etfbl.iprental.models.VehicleEntity;
 import org.etfbl.iprental.repositories.CarRepository;
 import org.etfbl.iprental.repositories.VehicleRepository;
@@ -20,19 +21,22 @@ public class CarService {
     private final VehicleService vehicleService;
     private final CarMapper carMapper;
     private final VehicleMapper vehicleMapper;
+    private final ManufacturerService manufacturerService;
 
-    public CarService(CarRepository carRepository, VehicleRepository vehicleRepository, VehicleService vehicleService, CarMapper carMapper, VehicleMapper vehicleMapper) {
+    public CarService(CarRepository carRepository, VehicleRepository vehicleRepository, VehicleService vehicleService, CarMapper carMapper, VehicleMapper vehicleMapper, ManufacturerService manufacturerService) {
         this.carRepository = carRepository;
         this.vehicleRepository = vehicleRepository;
         this.vehicleService = vehicleService;
         this.carMapper = carMapper;
         this.vehicleMapper = vehicleMapper;
+        this.manufacturerService = manufacturerService;
     }
 
     /// Adds both to the vehicle table, and the Car table its corresponding data
     @Transactional
     public CarDTO addCar(CarDTO carDTO) {
         VehicleEntity vehicle = carMapper.toVehicleEntity(carDTO);
+
         if(carDTO.getStatus() == null)
         {
             vehicle.setStatus("available");
@@ -41,12 +45,10 @@ public class CarService {
             vehicle.setStatus(carDTO.getStatus());
         }
 
-        VehicleEntity savedVehicle = vehicleService.addVehicle(vehicleMapper.toDto(vehicle));
-                //= vehicleRepository.save(vehicle);
+        VehicleEntity savedVehicle = vehicleRepository.save(vehicle);
 
         CarEntity car = carMapper.toCarEntity(carDTO);
         car.setVehicle(savedVehicle);
-        car.setVehicleId(savedVehicle.getId());
 
         carRepository.save(car);
         return carMapper.toDto(car, savedVehicle);
@@ -68,16 +70,25 @@ public class CarService {
         CarEntity existingCar = carRepository.findById(carDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Car not found with ID: " + carDTO.getId()));
 
-        VehicleEntity updatedVehicle = carMapper.toVehicleEntity(carDTO);
-        updatedVehicle.setId(carDTO.getId());
-        VehicleEntity savedVehicle = vehicleRepository.save(updatedVehicle);
+        existingCar.setPurchaseDate(carDTO.getPurchaseDate());
+        existingCar.setDescription(carDTO.getDescription());
+        VehicleEntity vehicleFromCar = existingCar.getVehicle();
+        vehicleFromCar.setStatus(carDTO.getStatus());
+        vehicleFromCar.setModel(carDTO.getModel());
+        vehicleFromCar.setPurchasePrice(carDTO.getPurchasePrice());
+        vehicleFromCar.setRentalPrice(carDTO.getRentalPrice());
+        ManufacturerEntity myManufacturer = new ManufacturerEntity();
+        myManufacturer.setId(carDTO.getManufacturerId());
 
-        CarEntity updatedCar = carMapper.toCarEntity(carDTO);
-        updatedCar.setVehicle(savedVehicle);
-        updatedCar.setVehicleId(savedVehicle.getId());
+        vehicleFromCar.setManufacturer(myManufacturer);
+        vehicleFromCar.setPhotoUrl(carDTO.getPhotoUrl());
 
-        CarEntity savedCar = carRepository.save(updatedCar);
-        return carMapper.toDto(savedCar, savedVehicle);
+        VehicleEntity updatedVehicle = vehicleRepository.save(vehicleFromCar);
+        existingCar.setVehicle(updatedVehicle);
+
+
+        CarEntity savedCar = carRepository.save(existingCar);
+        return carMapper.toDto(savedCar, updatedVehicle);
     }
 
     public void deleteCar(String id) {

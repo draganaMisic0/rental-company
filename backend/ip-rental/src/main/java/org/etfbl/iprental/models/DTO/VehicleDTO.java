@@ -12,11 +12,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VehicleDTO {
-    private String id;
-    private String model;
-    private BigDecimal purchasePrice;
-    private String photoUrl;
-    private String status;
-    private BigDecimal rentalPrice;
-    private Integer manufacturerId;
+    protected String id;
+    protected String model;
+    protected BigDecimal purchasePrice;
+    protected String photoUrl;
+    protected String status;
+    protected BigDecimal rentalPrice;
+    protected Integer manufacturerId;
 }

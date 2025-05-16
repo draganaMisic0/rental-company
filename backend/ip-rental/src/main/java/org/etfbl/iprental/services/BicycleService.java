@@ -27,11 +27,19 @@ public class BicycleService {
 
     public BicycleDTO addBicycle(BicycleDTO bicycleDTO) {
         VehicleEntity vehicle = bicycleMapper.toVehicleEntity(bicycleDTO);
+
+        if(bicycleDTO.getStatus() == null)
+        {
+            vehicle.setStatus("available");
+        }
+        else{
+            vehicle.setStatus(bicycleDTO.getStatus());
+        }
+
         VehicleEntity savedVehicle = vehicleRepository.save(vehicle);
 
         BicycleEntity bicycle = bicycleMapper.toBicycleEntity(bicycleDTO);
         bicycle.setVehicle(savedVehicle);
-        bicycle.setVehicleId(savedVehicle.getId());
 
         bicycleRepository.save(bicycle);
         return bicycleMapper.toDto(bicycle, savedVehicle);

@@ -42,9 +42,9 @@ public class CarMapper {
         return vehicle;
     }
 
+    /// Sets the Car specific attributes (for code-writing efficiency)
     public CarEntity toCarEntity(CarDTO dto) {
         CarEntity car = new CarEntity();
-        car.setVehicleId(dto.getId());
         car.setPurchaseDate(dto.getPurchaseDate());
         car.setDescription(dto.getDescription());
         return car;

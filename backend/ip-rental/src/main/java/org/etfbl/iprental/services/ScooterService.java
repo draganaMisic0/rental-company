@@ -26,11 +26,19 @@ public class ScooterService {
 
     public ScooterDTO addScooter(ScooterDTO scooterDTO) {
         VehicleEntity vehicle = scooterMapper.toVehicleEntity(scooterDTO);
+
+        if(scooterDTO.getStatus() == null)
+        {
+            vehicle.setStatus("available");
+        }
+        else{
+            vehicle.setStatus(scooterDTO.getStatus());
+        }
+
         VehicleEntity savedVehicle = vehicleRepository.save(vehicle);
 
         ScooterEntity scooter = scooterMapper.toScooterEntity(scooterDTO);
         scooter.setVehicle(savedVehicle);
-        scooter.setVehicleId(savedVehicle.getId());
 
         scooterRepository.save(scooter);
         return scooterMapper.toDto(scooter, savedVehicle);

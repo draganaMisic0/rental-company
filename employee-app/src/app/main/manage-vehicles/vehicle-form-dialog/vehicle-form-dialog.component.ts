@@ -43,7 +43,6 @@ export class VehicleFormDialogComponent implements OnInit {
     this.form = this.fb.group({
       model: [this.data.vehicle?.model || '', Validators.required],
       purchasePrice: [this.data.vehicle?.purchasePrice || '', [Validators.required, Validators.min(0)]],
-      status: ['available', Validators.required],
       rentalPrice: [this.data.vehicle?.rentalPrice || '', [Validators.required, Validators.min(0)]],
       manufacturerId: [this.data.vehicle?.manufacturerId || null, Validators.required]
     });

@@ -31,8 +31,8 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<VehicleEntity> createVehicle(@RequestBody VehicleDTO vehicleDTO) {
-        VehicleEntity created = vehicleService.addVehicle(vehicleDTO);
+    public ResponseEntity<VehicleEntity> createVehicle(@RequestBody VehicleEntity vehicleInput) {
+        VehicleEntity created = vehicleService.addVehicle(vehicleInput);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 

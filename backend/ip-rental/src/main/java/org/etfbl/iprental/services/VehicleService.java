@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,14 +42,9 @@ public class VehicleService {
     }
 
     @Transactional
-    public VehicleEntity addVehicle(VehicleDTO dto) {
-        ManufacturerEntity manufacturer = manufacturerRepo.findById(dto.getManufacturerId())
-                .orElseThrow(() -> new RuntimeException("Manufacturer not found"));
+    public VehicleEntity addVehicle(VehicleEntity vehicleInput) {
 
-        VehicleEntity vehicle = vehicleMapper.toEntity(dto, manufacturer);
-
-        VehicleEntity returnedVehicle = vehicleRepo.save(vehicle);
-        return (returnedVehicle);
+        return vehicleRepo.save(vehicleInput);
     }
 
     public void deleteVehicle(String id) {

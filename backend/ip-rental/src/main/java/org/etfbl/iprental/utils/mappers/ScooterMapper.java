@@ -27,15 +27,21 @@ public class ScooterMapper {
         vehicle.setId(dto.getId());
         vehicle.setModel(dto.getModel());
         vehicle.setPurchasePrice(dto.getPurchasePrice());
+        vehicle.setRentalPrice(dto.getRentalPrice());
         vehicle.setStatus(dto.getStatus());
         vehicle.setPhotoUrl(dto.getPhotoUrl());
-        vehicle.setRentalPrice(dto.getRentalPrice());
+
+
+        ManufacturerEntity tempEntity = new ManufacturerEntity();
+        tempEntity.setId(dto.getManufacturerId());
+        vehicle.setManufacturer(tempEntity);
+
+
         return vehicle;
     }
 
     public ScooterEntity toScooterEntity(ScooterDTO dto) {
         ScooterEntity scooter = new ScooterEntity();
-        scooter.setVehicleId(dto.getId());
         scooter.setMaxSpeed(dto.getMaxSpeed());
         return scooter;
     }

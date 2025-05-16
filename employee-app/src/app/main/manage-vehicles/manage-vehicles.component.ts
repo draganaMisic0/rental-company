@@ -73,8 +73,6 @@ export class ManageVehiclesComponent implements OnInit {
     
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
-            console.log("Result");
-            console.log(result);
             switch(this.selectedType)
             {
               case "bicycles":
