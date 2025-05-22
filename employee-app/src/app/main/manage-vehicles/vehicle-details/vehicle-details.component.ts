@@ -36,9 +36,7 @@ export class VehicleDetailComponent implements OnInit {
     console.log("Type & Id:");
     console.log(type);
     console.log(id);
-  //  this.service.get(type, id).subscribe(v => this.vehicle = v);
-  //  this.service.getFaults(type, id).subscribe(f => this.faults = f);
-  //  this.service.getRentals(type, id).subscribe(r => this.rentals = r);
+  
   }
 
   addFault() { /* otvoriti dialog i pozvati service.addFault */ }

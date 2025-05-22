@@ -8,14 +8,20 @@
     <mat-divider></mat-divider>
 
     <section>
-        @for(malfunction of this.malfunctions; track malfunction.id)
+      <mat-paginator
+          [length]="malfunctions.length"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[1, 2, 4, 5]"
+          (page)="onPageChange($event)">
+        </mat-paginator>
+
+        @for(malfunction of this.pagedMalfunctions; track malfunction.id)
         {
             <app-malfunction-card
-            [malfunction]="malfunction"
-            (edit)="onEditMalfunction($event)"
-            (delete)="onDeleteMalfunction($event)">
+            [malfunction]="malfunction">
             </app-malfunction-card>
         }
+        
     </section>
   
   </div>

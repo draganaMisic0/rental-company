@@ -24,4 +24,12 @@ export class MalfunctionCardComponent {
     onDelete(): void {
       this.delete.emit(this.malfunction.id);
     }
+
+     get hasEditListener(): boolean {
+        return this.edit?.observed;
+    }
+
+    get hasDeleteListener(): boolean {
+        return this.delete?.observed;
+    }
 }

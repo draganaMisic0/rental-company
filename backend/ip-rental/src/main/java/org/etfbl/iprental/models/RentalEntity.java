@@ -42,7 +42,7 @@ public class RentalEntity {
     @JoinColumn(name = "vehicle_id", nullable = false)
     private VehicleEntity vehicle;
 
-    @Column(name = "total_price", nullable = false, precision = 8)
+    @Column(name = "total_price", nullable = false, precision = 8, scale = 2)
     private BigDecimal totalPrice;
 
 }

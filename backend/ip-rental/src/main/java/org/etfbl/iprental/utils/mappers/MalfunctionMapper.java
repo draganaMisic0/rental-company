@@ -16,6 +16,7 @@ public class MalfunctionMapper {
         dto.setDateAndTime(entity.getDateAndTime());
         if (entity.getVehicle() != null) {
             dto.setVehicleId(entity.getVehicle().getId());
+            dto.setVehicleModel(entity.getVehicle().getModel());
         }
 
         return dto;
@@ -26,6 +27,12 @@ public class MalfunctionMapper {
         entity.setId(dto.getId());
         entity.setDescription(dto.getDescription());
         entity.setDateAndTime(dto.getDateAndTime());
+
+        VehicleEntity tempVehicleEntity = new VehicleEntity();
+        tempVehicleEntity.setId(tempVehicleEntity.getId());
+        tempVehicleEntity.setModel(dto.getVehicleModel());
+
+        entity.setVehicle(tempVehicleEntity);
 
         return entity;
     }

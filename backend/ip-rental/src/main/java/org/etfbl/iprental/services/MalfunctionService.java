@@ -8,6 +8,7 @@ import org.etfbl.iprental.repositories.VehicleRepository;
 import org.etfbl.iprental.utils.mappers.MalfunctionMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,17 @@ public class MalfunctionService {
         MalfunctionEntity malfunction = malfunctionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Malfunction not found with ID: " + id));
         return malfunctionMapper.toDto(malfunction);
+    }
+
+    public List<MalfunctionDTO> getMalfunctionsByVehicleId(String vehicle_id) {
+        List<MalfunctionEntity> malfunctions = malfunctionRepository.findByVehicleId(vehicle_id);
+
+                List<MalfunctionDTO> listToReturn= new ArrayList<MalfunctionDTO>();
+                for(MalfunctionEntity malfunction : malfunctions)
+                {
+                   listToReturn.add(malfunctionMapper.toDto(malfunction));
+                }
+        return listToReturn;
     }
 
     public MalfunctionDTO updateMalfunction(Integer id, MalfunctionDTO dto) {

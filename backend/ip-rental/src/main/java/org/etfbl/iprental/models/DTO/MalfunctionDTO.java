@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,6 +14,7 @@ import java.time.Instant;
 public class MalfunctionDTO {
     private Integer id;
     private String description;
-    private Instant dateAndTime;
-    private String vehicleId; // To avoid sending the full VehicleEntity
+    private LocalDateTime dateAndTime;
+    private String vehicleId;
+    private String vehicleModel;
 }
