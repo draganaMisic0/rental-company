@@ -1,1 +1,21 @@
-<p>report-issues works!</p>
+<div class="container">
+
+    <button mat-fab extended  color="primary" (click)="openAddDialog()" class="add-button" style="margin: 20px 5px">
+      <mat-icon>report</mat-icon>
+        Report Malfunction
+    </button>
+  
+    <mat-divider></mat-divider>
+
+    <section>
+        @for(malfunction of this.malfunctions; track malfunction.id)
+        {
+            <app-malfunction-card
+            [malfunction]="malfunction"
+            (edit)="onEditMalfunction($event)"
+            (delete)="onDeleteMalfunction($event)">
+            </app-malfunction-card>
+        }
+    </section>
+  
+  </div>
