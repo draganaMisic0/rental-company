@@ -4,6 +4,10 @@
   padding: 1rem;
   box-sizing: border-box;
   background-color: #f4f6f8;
+  margin-top: 5vh;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+    margin-bottom: 5vh;
 }
 
 .viewport {

@@ -1,6 +1,7 @@
 .page-container {
   height: 100vh;
   width: 100%;
+  
 }
 
 .main-container {
@@ -13,6 +14,10 @@
   transition: transform 0.3s ease;
   background-color: rgba(63, 75, 76, 0.99);
   border-top-right-radius: 0;
+}
+
+.sidenav-content{
+  overflow: hidden;
 }
 
 .nav-link-color{
