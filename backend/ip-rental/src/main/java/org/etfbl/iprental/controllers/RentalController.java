@@ -32,6 +32,11 @@ public class RentalController {
         return ResponseEntity.ok(rentalService.getRentalById(id));
     }
 
+    @GetMapping("/by_veh/{id}")
+    public ResponseEntity<List<RentalDTO>> getRentalsByVehicleId(@PathVariable String id) {
+        return ResponseEntity.ok(rentalService.getRentalsByVehicleId(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<RentalDTO> updateRental(@PathVariable Integer id, @RequestBody RentalDTO dto) {
         return ResponseEntity.ok(rentalService.updateRental(id, dto));

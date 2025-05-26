@@ -22,9 +22,11 @@ public class RentalMapper {
 
         if (entity.getClient() != null) {
             dto.setClientId(entity.getClient().getId());
+            dto.setClientName(entity.getClient().getFirstName() + " " + entity.getClient().getLastName());
         }
         if (entity.getVehicle() != null) {
             dto.setVehicleId(entity.getVehicle().getId());
+            dto.setVehicleModel(entity.getVehicle().getModel());
         }
 
         return dto;

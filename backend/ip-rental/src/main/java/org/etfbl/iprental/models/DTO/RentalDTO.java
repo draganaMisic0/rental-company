@@ -21,6 +21,8 @@ public class RentalDTO {
     private BigDecimal endLat;
     private Integer duration;
     private Integer clientId;
+    private String  clientName;
     private String vehicleId;
+    private String vehicleModel;
     private BigDecimal totalPrice;
 }

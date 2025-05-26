@@ -10,6 +10,7 @@ import org.etfbl.iprental.repositories.VehicleRepository;
 import org.etfbl.iprental.utils.mappers.RentalMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,17 @@ public class RentalService {
         RentalEntity rental = rentalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found with ID: " + id));
         return rentalMapper.toDto(rental);
+    }
+
+    public List<RentalDTO> getRentalsByVehicleId(String vehicle_id) {
+        List<RentalEntity> rentals = rentalRepository.findAllByVehicleId(vehicle_id);
+
+        List<RentalDTO> listToReturn= new ArrayList<RentalDTO>();
+        for(RentalEntity rental : rentals)
+        {
+            listToReturn.add(rentalMapper.toDto(rental));
+        }
+        return listToReturn;
     }
 
     public RentalDTO updateRental(Integer id, RentalDTO dto) {

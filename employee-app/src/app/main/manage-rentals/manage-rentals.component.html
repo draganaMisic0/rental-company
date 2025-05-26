@@ -1,1 +1,46 @@
-<p>manage-rentals works!</p>
+<div class="rental-container mat-typography">
+  @if(rentals.length > 0) {
+    <cdk-virtual-scroll-viewport itemSize="220" class="viewport">
+    <mat-card *cdkVirtualFor="let rental of rentals" class="rental-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="icon">commute</mat-icon>
+          {{ rental.vehicleModel }} [{{ rental.vehicleId }}]
+        </mat-card-title>
+        <mat-card-subtitle>
+          <mat-icon class="icon">event</mat-icon>
+          {{ rental.dateAndTime | date: 'medium' }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="rental-section">
+          <mat-icon class="icon">person</mat-icon>
+          <strong>Client:</strong> {{ rental.clientName }} (ID: {{ rental.clientId }})
+        </div>
+        <div class="rental-section">
+          <mat-icon class="icon">place</mat-icon>
+          <strong>From:</strong> ({{ rental.startLat }}, {{ rental.startLon }})
+        </div>
+        <div class="rental-section">
+          <mat-icon class="icon">flag</mat-icon>
+          <strong>To:</strong> ({{ rental.endLat }}, {{ rental.endLon }})
+        </div>
+        <div class="rental-section">
+          <mat-icon class="icon">schedule</mat-icon>
+          <strong>Duration:</strong> {{ rental.duration }} min
+        </div>
+        <div class="rental-section">
+          <mat-icon class="icon">attach_money</mat-icon>
+          <strong>Total Price:</strong> ${{ rental.totalPrice }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </cdk-virtual-scroll-viewport>
+  }
+  @else {
+    <h3>
+        No Rentals Found!
+    </h3>
+  }
+  
+</div>

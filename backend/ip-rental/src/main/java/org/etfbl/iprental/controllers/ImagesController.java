@@ -1,6 +1,7 @@
 package org.etfbl.iprental.controllers;
 
 import lombok.RequiredArgsConstructor;
+
 import org.etfbl.iprental.services.ImagesService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -17,6 +18,12 @@ public class ImagesController {
 
     private final ImagesService imagesService;
 
+    /**
+     *
+     * @param type Can be either vehicle or client
+     * @param id of the target entity
+     * @param file The Image itself
+     */
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(
             @RequestParam("type") String type,
