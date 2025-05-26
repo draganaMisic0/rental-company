@@ -12,18 +12,25 @@ import { MalfunctionService } from '../../../services/malfunction.service';
 import { RentalService } from '../../../services/rental.service';
 import { Malfunction } from '../../../../models/malfunction-data';
 import { Rental } from '../../../../models/rental-data';
+import { DatePipe } from '@angular/common';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatDialog } from '@angular/material/dialog';
+import { AddMalfunctionFormComponent } from '../../report-issues/add-malfunction-form/add-malfunction-form.component';
+import { Vehicle } from '../../../../models/vehicles-data';
 
 @Component({
   selector: 'app-vehicle-details',
-  imports: [MaterialModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule],
+  imports: [MaterialModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule, ScrollingModule, DatePipe],
   templateUrl: './vehicle-details.component.html',
   styleUrl: './vehicle-details.component.css',
   providers: [BicycleService, CarService, ScooterService, MalfunctionService, RentalService]
 })
 export class VehicleDetailComponent implements OnInit {
-  vehicle: any;
-  faults: any[] = [];
+  vehicle!: Vehicle;
+  faults: Malfunction[] = [];
   rentals: Rental[] = [];
+
+  
 
 displayedColumns: string[] = ['clientName', 'dateAndTime', 'duration', 'totalPrice', 'vehicleModel'];
 
@@ -33,7 +40,8 @@ displayedColumns: string[] = ['clientName', 'dateAndTime', 'duration', 'totalPri
     private bicycleService: BicycleService,
     private scooterService: ScooterService,
     private malfunctionService: MalfunctionService,
-    private rentalService: RentalService
+    private rentalService: RentalService,
+    private dialog: MatDialog
   ) {
     
     const id = this.route.snapshot.paramMap.get('id');
@@ -74,6 +82,43 @@ displayedColumns: string[] = ['clientName', 'dateAndTime', 'duration', 'totalPri
   return item.id;
 }
 
-  addFault() { /* otvoriti dialog i pozvati service.addFault */ }
-  deleteFault(fid: string) { /* pozvati service.deleteFault */ }
+  addFault() {
+   
+    const dialogRef = this.dialog.open(AddMalfunctionFormComponent, {
+                width: '550px',
+                data: {vehicleId: this.vehicle.id}
+              });
+          
+            dialogRef.afterClosed().subscribe(
+              {
+                next: (result: Malfunction) => {
+                  console.log("Malfunction to add:");
+                  console.log(result);
+                  this.malfunctionService.add({...result}).subscribe(
+                    {
+                      next: () => {
+                          this.malfunctionService.getAllByVehicleId(result.vehicleId).subscribe((malfunctions: Malfunction[]) => {
+                            console.log(malfunctions);
+                            this.faults = malfunctions;
+                          });
+                      },
+                      error: error => console.error(error)
+                    }
+                  );
+                },
+                error: (error) => {console.error(error)}
+              }
+            );
+  }
+
+  
+  deleteFault(id: number) { 
+    this.malfunctionService.delete(id).subscribe(
+      () => {
+          this.malfunctionService.getAllByVehicleId(this.vehicle.id).subscribe((malfunctions: Malfunction[]) => {
+          this.faults = malfunctions;
+        });
+      }
+    );
+   }
 }

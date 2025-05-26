@@ -38,20 +38,35 @@ export class AddMalfunctionFormComponent {
       vehicleId: [this.data?.vehicleId || '', Validators.required],
     });
 
+    if(this.form.get('vehicleId')?.value) //If the vehicleId is already set, disable the option selecting another vehicle
+    {
+      this.form.get('vehicleId')?.disable();
+    }
+
     this.vehicleService.getAll().subscribe(
       {
         next: (result) => { this.vehicles = result; },
         error: error => { console.error(error); }
       }
     )
+
+    console.log("DATA:" );
+    console.log(this.data?.vehicleId);
   }
 
   onSubmit() {
      if (this.form.invalid) { return; }
     // keep ID out for create, preserve for edit
+
+
     const output = {
       ...this.form.value
     };
+
+    if(output.vehicleId === undefined)
+    {
+      output.vehicleId = this.data?.vehicleId;
+    }
 
     console.log(output);
     this.dialogRef.close(output);

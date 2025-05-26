@@ -63,8 +63,7 @@ export class ReportIssuesComponent implements OnInit{
               error: (error) => {console.error(error)}
             }
           );
-
-          }
+      }
   
 
           

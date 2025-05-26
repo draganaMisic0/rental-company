@@ -5,37 +5,27 @@
     <mat-tab label="Info">
       <div>
         <p><strong>Purchase Price:</strong> {{ vehicle.purchasePrice }}</p>
-        @if(vehicle.purchaseDate)
-        {
-             <p><strong>Purchase Date:</strong> {{ vehicle.purchaseDate }}</p>
-        }
       </div>
     </mat-tab>
 
     <mat-tab label="Faults">
       <button mat-raised-button color="primary" (click)="addFault()">Add Fault</button>
-      @if(faults.length)
-        {
-          <mat-list>
-            
-              @for(f of faults; track f.id)
-              {
-                <div>
-                  <mat-list-item style="border-bottom: 1px solid grey">
-                    {{ f.description }}
-                    <button mat-icon-button color="warn" (click)="deleteFault(f.id)"><mat-icon>delete</mat-icon></button>
-                  </mat-list-item>
-                </div>
-                  
-              }
-            
-            
-            
-          </mat-list>
-        }
-        @else{
-          <h3>No history of malfunctions!</h3>
-        }
+
+      @if(faults.length) {
+        <cdk-virtual-scroll-viewport itemSize="72" class="faults-viewport">
+          <div *cdkVirtualFor="let f of faults" class="fault-item">
+            <div class="fault-text">
+              <div class="fault-date">{{ f.dateAndTime | date: 'medium' }}</div>
+              <div class="fault-description">{{ f.description }}</div>
+            </div>
+            <button mat-icon-button class="delete-button" (click)="deleteFault(f.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      } @else {
+        <h3>No history of malfunctions!</h3>
+      }
     </mat-tab>
 
     <mat-tab label="Rentals">
