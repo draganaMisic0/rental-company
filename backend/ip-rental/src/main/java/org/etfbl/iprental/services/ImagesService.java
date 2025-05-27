@@ -52,12 +52,12 @@ public class ImagesService {
             if ("client".equalsIgnoreCase(type)) {
                 ClientEntity client = clientRepository.findById(Integer.parseInt(id))
                         .orElseThrow(() -> new RuntimeException("Client not found"));
-                client.setAvatarUrl(imageUrl);
+                client.setAvatarUrl(filePath.toString());
                 clientRepository.save(client);
             } else if ("vehicle".equalsIgnoreCase(type)) {
                 VehicleEntity vehicle = vehicleRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("Vehicle not found"));
-                vehicle.setPhotoUrl(imageUrl);
+                vehicle.setPhotoUrl(filePath.toString());
                 vehicleRepository.save(vehicle);
             }
 
@@ -82,6 +82,49 @@ public class ImagesService {
         } catch (MalformedURLException e) {
             throw new RuntimeException("Invalid file path", e);
         }
+    }
+
+
+    public Resource loadVehicleImageById(String vehicleId) {
+        VehicleEntity vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        String photoPath = vehicle.getPhotoUrl();
+        if (photoPath == null || photoPath.isBlank()) {
+            throw new RuntimeException("Vehicle has no photo");
+        }
+
+        try {
+            Path imagePath = Paths.get(photoPath);
+            Resource resource = new UrlResource(imagePath.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Image file is not readable or does not exist");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Invalid image path", e);
+        }
+    }
+
+    @Transactional
+    public void deleteVehicleImage(String id) {
+        VehicleEntity vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        String photoPath = vehicle.getPhotoUrl();
+        if (photoPath != null && !photoPath.isBlank()) {
+            try {
+                Path filePath = Paths.get(photoPath);
+                Files.deleteIfExists(filePath);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to delete image file", e);
+            }
+        }
+
+        vehicle.setPhotoUrl(null);
+        vehicleRepository.save(vehicle);
     }
 }
 

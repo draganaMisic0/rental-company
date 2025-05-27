@@ -55,9 +55,10 @@
         <div class="info-right">
           <div class="vehicle-photo-wrapper">
             <img 
-              [src]="vehicle.photoUrl || '/assets/no-photo.png'" 
-              alt="Vehicle Photo" 
+              [src]="imageService.getVehicleImageUrl(vehicle.id)"
+              alt="Vehicle Photo"
               class="vehicle-photo"
+              (error)="onImageError($event)"
             />
           </div>
           <div class="photo-controls">
@@ -77,7 +78,7 @@
                 (click)="onClickFileInputButton()"
               >
                 <mat-icon>attach_file</mat-icon>
-                Attach
+                Upload New Photo
               </button>
               @if(!file){
                 <p class="file-name">No file chosen</p>

@@ -53,4 +53,27 @@ public class ImagesController {
                 .contentType(contentType)
                 .body(image);
     }
+
+    @GetMapping("/vehicle/id/{id}")
+    public ResponseEntity<Resource> getVehicleImageById(@PathVariable String id) {
+        Resource image = imagesService.loadVehicleImageById(id);
+
+        MediaType contentType = MediaType.IMAGE_JPEG;
+        try {
+            String detectedType = Files.probeContentType(image.getFile().toPath());
+            if (detectedType != null) {
+                contentType = MediaType.parseMediaType(detectedType);
+            }
+        } catch (IOException ignored) {}
+
+        return ResponseEntity.ok()
+                .contentType(contentType)
+                .body(image);
+    }
+
+    @DeleteMapping("/vehicle/{id}")
+    public ResponseEntity<Void> deleteVehicleImage(@PathVariable String id) {
+        imagesService.deleteVehicleImage(id);
+        return ResponseEntity.noContent().build();
+    }
 }

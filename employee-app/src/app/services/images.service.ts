@@ -20,4 +20,13 @@ export class ImagesService {
 
     return this.http.post(`${this.apiUrl}/upload`, formData, { responseType: 'text' });
   }
+
+  getVehicleImageUrl(vehicleId: string): string {
+   return `${this.apiUrl}/vehicle/id/${vehicleId}`;
+  }
+
+  deleteVehicleImage(vehicleId: string): Observable<void> {
+  return this.http.delete<void>(`${this.apiUrl}/vehicle/${vehicleId}`);
+}
+
 }

@@ -51,7 +51,7 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
     private scooterService: ScooterService,
     private malfunctionService: MalfunctionService,
     private rentalService: RentalService,
-    private imageUploadService: ImagesService,
+    public imageService: ImagesService,
     private dialog: MatDialog
   ) {
     
@@ -139,9 +139,20 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
     console.log(event);
    }
 
-   deletePhoto(id: string) {
-    console.log(id);
-   }
+  deletePhoto(vehicleId: string) {
+    this.imageService.deleteVehicleImage(vehicleId).subscribe({
+      next: () => {
+        this.vehicle.photoUrl = null; // Update local model
+        this.file = null;
+      },
+      error: (err) => console.error('Failed to delete image:', err)
+    });
+  }
+
+  onImageError(event: Event): void {
+        const target = event.target as HTMLImageElement;
+        target.src = '/assets/no-photo.png';
+    }
 
   onClickFileInputButton(): void {
     this.fileInput.nativeElement.click();
@@ -154,7 +165,7 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
 
   if (this.file) {
     const vehicleId = this.vehicle.id;
-    this.imageUploadService.uploadImage('vehicle', vehicleId, this.file).subscribe({
+    this.imageService.uploadImage('vehicle', vehicleId, this.file).subscribe({
       next: (imageUrl: string) => {
         console.log("Upload successful:", imageUrl);
         this.vehicle.photoUrl = imageUrl;
