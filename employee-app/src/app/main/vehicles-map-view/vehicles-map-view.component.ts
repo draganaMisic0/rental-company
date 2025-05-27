@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { Rental } from '../../../models/rental-data';
-import { GoogleMap, GoogleMapsModule, MapAdvancedMarker, MapInfoWindow } from '@angular/google-maps';
+import { GoogleMapsModule, MapAdvancedMarker, MapInfoWindow } from '@angular/google-maps';
 import { RentalService } from '../../services/rental.service';
 import { MaterialModule } from '../../material/material-imports';
 
 @Component({
   selector: 'app-vehicles-map-view',
-  imports: [GoogleMapsModule, GoogleMap, MaterialModule],
+  imports: [GoogleMapsModule, MaterialModule],
   templateUrl: './vehicles-map-view.component.html',
   styleUrl: './vehicles-map-view.component.css',
   providers: [RentalService]
@@ -16,17 +16,12 @@ export class VehiclesMapViewComponent {
    title = "angular-google-maps";
   options: google.maps.MapOptions = {
     center: { lat: 44.78007051571545, lng: 17.208937002303145 },
-    
     zoom: 12,
     mapId: "MY_MAP_ID",
   };
-  nzLocations: any[] = [
-    { lat: -36.817685, lng: 175.699196 },
-    { lat: -36.828611, lng: 175.790222 },
-    { lat: -39.927193, lng: 175.053218 },
-    { lat: -41.330162, lng: 174.865694 },
-    { lat: -43.999792, lng: 170.463352 },
-  ];
+  rentals: Rental[] = [];
+  markers: any[] = [];
+
   auLocations: any[] = [
     { lat: -31.56391, lng: 147.154312 },
     { lat: -33.718234, lng: 150.363181 },
@@ -49,18 +44,12 @@ export class VehiclesMapViewComponent {
   ];
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
 
-  constructor(){
+  constructor(private rentalService: RentalService){
   
   }
 
   ngOnInit() {
-    const parser = new DOMParser();
-    const svgString = `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FF5733" stroke="#FFFFFF" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
-                      </svg>`;
-    this.nzLocations.forEach((location) => {
-      location.content = parser.parseFromString(svgString, "image/svg+xml").documentElement;
-    });
+
     const beachFlag =
       "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
     this.auLocations.forEach((location) => {
@@ -68,9 +57,26 @@ export class VehiclesMapViewComponent {
       imgTag.src = beachFlag;
       location.content = imgTag;
     });
+
+    this.rentalService.getAll().subscribe((rentals: Rental[]) => {
+      this.rentals = rentals;
+      this.markers = this.extractMarkersFromRentals(rentals);
+    })
   }
 
   onMarkerClick(marker: MapAdvancedMarker) {
-    this.infoWindow.openAdvancedMarkerElement(marker.advancedMarker, marker.advancedMarker.title);
+    this.infoWindow.open(marker, true, marker.advancedMarker.title);
+  }
+
+  extractMarkersFromRentals(rentals: Rental[]): any[] {
+
+    rentals.forEach((rental: Rental) => {
+
+    });
+    return [];
   }
 }
+
+
+
+

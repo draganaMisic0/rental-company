@@ -1,15 +1,7 @@
 <mat-card class="map-container">
   <h3>Vehicle Map</h3>
-<google-map height="600px" width="800px" [options]="options">
-  @for (location of nzLocations; track location; let index = $index) {
-  <map-advanced-marker
-    #markerElem="mapAdvancedMarker"
-    [position]="{ lat: location.lat, lng: location.lng }"
-    [content]="location.content"
-    [title]="'Location ' + (index + 1)"
-    (mapClick)="onMarkerClick(markerElem)"
-  />
-  } @for (location of auLocations; track location; let index = $index) {
+<google-map height="35rem" width="75rem" [options]="options">
+   @for (location of auLocations; track location; let index = $index) {
   <map-advanced-marker
     #markerElem="mapAdvancedMarker"
     [position]="{ lat: location.lat, lng: location.lng }"
