@@ -12,4 +12,12 @@ public interface RentalRepository extends JpaRepository<RentalEntity, Integer> {
 
     @Query("SELECT r FROM RentalEntity r WHERE r.vehicle.id = :vehicleId")
     List<RentalEntity> findAllByVehicleId(@Param("vehicleId") String vehicleId);
+
+    @Query("""
+    SELECT r FROM RentalEntity r 
+    WHERE r.dateAndTime = (
+        SELECT MAX(r2.dateAndTime) FROM RentalEntity r2 WHERE r2.vehicle.id = r.vehicle.id
+    )
+    """)
+    List<RentalEntity> findLatestRentalsPerVehicle();
 }
