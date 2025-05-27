@@ -3,12 +3,97 @@
   <h2>{{ vehicle.model }} Details</h2>
   <mat-tab-group>
     <mat-tab label="Info">
-      <div>
-        <p><strong>Purchase Price:</strong> {{ vehicle.purchasePrice }}</p>
+      <div class="info-tab-container">
+        <!-- LEFT SIDE: Vehicle Info -->
+        <div class="info-left">
+      <h2 class="vehicle-title">{{ vehicle.model }} Details</h2>
+
+      <div class="info-item">
+        <span class="label">Status</span>
+        <span class="value">{{ vehicle.status | uppercase}}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Purchase Price</span>
+        <span class="value">{{ vehicle.purchasePrice | currency }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Rental Price</span>
+        <span class="value">{{ vehicle.rentalPrice | currency }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Manufacturer ID</span>
+        <span class="value">{{ vehicle.manufacturerId }}</span>
+      </div>
+
+      <ng-container [ngSwitch]="vehicleType">
+        <div class="info-item" *ngSwitchCase="'scooters'">
+          <span class="label">Max Speed</span>
+          <span class="value">{{ vehicle.maxSpeed }} km/h</span>
+        </div>
+
+        <div class="info-item" *ngSwitchCase="'cars'">
+          <span class="label">Purchase Date</span>
+          <span class="value">{{ vehicle.purchaseDate | date: 'mediumDate' }}</span>
+        </div>
+
+        <div class="info-item" *ngSwitchCase="'cars'">
+          <span class="label">Description</span>
+          <span class="value">{{ vehicle.description }}</span>
+        </div>
+
+        <div class="info-item" *ngSwitchCase="'bicycles'">
+          <span class="label">Range</span>
+          <span class="value">{{ vehicle.range }} km</span>
+        </div>
+      </ng-container>
+    </div>
+
+        <!-- RIGHT SIDE: Vehicle Photo -->
+        <div class="info-right">
+          <div class="vehicle-photo-wrapper">
+            <img 
+              [src]="vehicle.photoUrl || '/assets/no-photo.png'" 
+              alt="Vehicle Photo" 
+              class="vehicle-photo"
+            />
+          </div>
+          <div class="photo-controls">
+            <!-- Input type FILE - In Materials Style -->
+            <div class="file-input-container">
+              <input
+                type="file"
+                style="display: none"
+                #fileInput
+                accept="image/*"
+                (change)="onChangeFileInput()"
+              />
+              <button
+                mat-raised-button
+                color="primary"
+                class="file-select-button"
+                (click)="onClickFileInputButton()"
+              >
+                <mat-icon>attach_file</mat-icon>
+                Attach
+              </button>
+              @if(!file){
+                <p class="file-name">No file chosen</p>
+              }
+              @else {
+                <p class="file-name">{{ file.name }}</p>
+              }
+            </div>
+            <button mat-raised-button color="warn" (click)="deletePhoto(vehicle.id)" [disabled]="!vehicle.photoUrl">Delete Photo</button>
+          </div>
+        </div>
       </div>
     </mat-tab>
 
     <mat-tab label="Faults">
+      <div style="padding: 2vh 0vh"></div>
       <button mat-raised-button color="primary" (click)="addFault()">Add Fault</button>
 
       @if(faults.length) {

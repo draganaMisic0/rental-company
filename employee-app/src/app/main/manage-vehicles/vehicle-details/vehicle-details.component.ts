@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaterialModule } from '../../../material/material-imports';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
@@ -12,27 +12,36 @@ import { MalfunctionService } from '../../../services/malfunction.service';
 import { RentalService } from '../../../services/rental.service';
 import { Malfunction } from '../../../../models/malfunction-data';
 import { Rental } from '../../../../models/rental-data';
-import { DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatDialog } from '@angular/material/dialog';
 import { AddMalfunctionFormComponent } from '../../report-issues/add-malfunction-form/add-malfunction-form.component';
 import { Vehicle } from '../../../../models/vehicles-data';
+import { Car } from '../../../../models/car-data';
+import { Bicycle } from '../../../../models/bicycle-data';
+import { Scooter } from '../../../../models/scooter-data';
 
 @Component({
   selector: 'app-vehicle-details',
-  imports: [MaterialModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule, ScrollingModule, DatePipe],
+  imports: [CommonModule ,MaterialModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule, ScrollingModule, DatePipe, CurrencyPipe],
   templateUrl: './vehicle-details.component.html',
   styleUrl: './vehicle-details.component.css',
   providers: [BicycleService, CarService, ScooterService, MalfunctionService, RentalService]
 })
 export class VehicleDetailComponent implements OnInit {
-  vehicle!: Vehicle;
+
+  vehicle!: any;
   faults: Malfunction[] = [];
   rentals: Rental[] = [];
+
+  @ViewChild('fileInput') fileInput: any;
+
+  file: File | null = null;
 
   
 
 displayedColumns: string[] = ['clientName', 'dateAndTime', 'duration', 'totalPrice', 'vehicleModel'];
+vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
 
   constructor(
     private route: ActivatedRoute,
@@ -53,6 +62,8 @@ displayedColumns: string[] = ['clientName', 'dateAndTime', 'duration', 'totalPri
     const { type, id } = this.route.snapshot.params;
     
     if (!id || !type) return;
+
+    this.vehicleType = type as 'car' | 'bicycle' | 'scooter';
 
   switch (type) {
     case 'bicycles':
@@ -121,4 +132,23 @@ displayedColumns: string[] = ['clientName', 'dateAndTime', 'duration', 'totalPri
       }
     );
    }
+
+   onPhotoSelected(event: any) {
+    console.log(event);
+   }
+
+   deletePhoto(id: string) {
+    console.log(id);
+   }
+
+  onClickFileInputButton(): void {
+    this.fileInput.nativeElement.click();
+  }
+
+  onChangeFileInput(): void {
+    const files: { [key: string]: File } = this.fileInput.nativeElement.files;
+    this.file = files[0];
+    console.log("CHANGED FILE INPUT:");
+    console.log(this.file);
+  }
 }

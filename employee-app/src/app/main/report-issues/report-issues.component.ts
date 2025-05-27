@@ -16,7 +16,7 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class ReportIssuesComponent implements OnInit{
 
-  malfunctions!: Malfunction[];
+  malfunctions: Malfunction[] = [];
   pagedMalfunctions: Malfunction[] = [];
   pageSize: number = 2;
   currentPage: number = 0;
