@@ -1,1 +1,23 @@
-<p>vehicles-map-view works!</p>
+<mat-card class="map-container">
+  <h3>Vehicle Map</h3>
+<google-map height="600px" width="800px" [options]="options">
+  @for (location of nzLocations; track location; let index = $index) {
+  <map-advanced-marker
+    #markerElem="mapAdvancedMarker"
+    [position]="{ lat: location.lat, lng: location.lng }"
+    [content]="location.content"
+    [title]="'Location ' + (index + 1)"
+    (mapClick)="onMarkerClick(markerElem)"
+  />
+  } @for (location of auLocations; track location; let index = $index) {
+  <map-advanced-marker
+    #markerElem="mapAdvancedMarker"
+    [position]="{ lat: location.lat, lng: location.lng }"
+    [content]="location.content"
+    [title]="'Location ' + (index + 1)"
+    (mapClick)="onMarkerClick(markerElem)"
+  />
+  }
+  <map-info-window #infoWindow></map-info-window>
+  </google-map>
+</mat-card> 
