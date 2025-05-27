@@ -83,7 +83,7 @@
                 <p class="file-name">No file chosen</p>
               }
               @else {
-                <p class="file-name">{{ file.name }}</p>
+                <p class="file-name">{{ file.name || 'No file chosen' }}</p>
               }
             </div>
             <button mat-raised-button color="warn" (click)="deletePhoto(vehicle.id)" [disabled]="!vehicle.photoUrl">Delete Photo</button>

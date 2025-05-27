@@ -20,13 +20,14 @@ import { Vehicle } from '../../../../models/vehicles-data';
 import { Car } from '../../../../models/car-data';
 import { Bicycle } from '../../../../models/bicycle-data';
 import { Scooter } from '../../../../models/scooter-data';
+import { ImagesService } from '../../../services/images.service';
 
 @Component({
   selector: 'app-vehicle-details',
   imports: [CommonModule ,MaterialModule, MatTabsModule, MatTableModule, MatPaginatorModule, MatSortModule, ScrollingModule, DatePipe, CurrencyPipe],
   templateUrl: './vehicle-details.component.html',
   styleUrl: './vehicle-details.component.css',
-  providers: [BicycleService, CarService, ScooterService, MalfunctionService, RentalService]
+  providers: [BicycleService, CarService, ScooterService, MalfunctionService, RentalService, ImagesService]
 })
 export class VehicleDetailComponent implements OnInit {
 
@@ -50,6 +51,7 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
     private scooterService: ScooterService,
     private malfunctionService: MalfunctionService,
     private rentalService: RentalService,
+    private imageUploadService: ImagesService,
     private dialog: MatDialog
   ) {
     
@@ -146,9 +148,23 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
   }
 
   onChangeFileInput(): void {
-    const files: { [key: string]: File } = this.fileInput.nativeElement.files;
-    this.file = files[0];
-    console.log("CHANGED FILE INPUT:");
-    console.log(this.file);
+  const files: { [key: string]: File } = this.fileInput.nativeElement.files;
+  this.file = files[0];
+  console.log("Selected file:", this.file);
+
+  if (this.file) {
+    const vehicleId = this.vehicle.id;
+    this.imageUploadService.uploadImage('vehicle', vehicleId, this.file).subscribe({
+      next: (imageUrl: string) => {
+        console.log("Upload successful:", imageUrl);
+        this.vehicle.photoUrl = imageUrl;
+        this.file = null;
+        this.fileInput.nativeElement.value = ''; // Reset file input
+      },
+      error: (err) => {
+        console.error("Upload failed:", err);
+      }
+    });
   }
+}
 }
