@@ -25,5 +25,9 @@ export class RentalService {
       return this.http.get<Rental[]>(`${this.apiUrl}/by_veh/${id}`);
     }
 
+    getLatestPerVehicle(): Observable<Rental[]> {
+      return this.http.get<Rental[]>(`${this.apiUrl}/latest_unique`);
+    }
+
 
 }

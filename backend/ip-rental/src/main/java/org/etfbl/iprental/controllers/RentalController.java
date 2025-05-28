@@ -32,6 +32,11 @@ public class RentalController {
         return ResponseEntity.ok(rentalService.getRentalById(id));
     }
 
+    @GetMapping("/latest_unique")
+    public ResponseEntity<List<RentalDTO>> getLatestRentalsPerVehicle() {
+        return ResponseEntity.ok(rentalService.getLatestRentalsPerVehicle());
+    }
+
     @GetMapping("/by_veh/{id}")
     public ResponseEntity<List<RentalDTO>> getRentalsByVehicleId(@PathVariable String id) {
         return ResponseEntity.ok(rentalService.getRentalsByVehicleId(id));

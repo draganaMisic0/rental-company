@@ -56,7 +56,6 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
   ) {
     
     const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
  
   }
 
@@ -80,12 +79,10 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
   }
 
   this.malfunctionService.getAllByVehicleId(id).subscribe((malfunctions: Malfunction[]) => {
-    console.log(malfunctions);
     this.faults = malfunctions;
   });
 
   this.rentalService.getByVehicleId(id).subscribe((rentals: Rental[]) => {
-    console.log(rentals);
     this.rentals = rentals;
   })
   
@@ -105,13 +102,10 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
             dialogRef.afterClosed().subscribe(
               {
                 next: (result: Malfunction) => {
-                  console.log("Malfunction to add:");
-                  console.log(result);
                   this.malfunctionService.add({...result}).subscribe(
                     {
                       next: () => {
                           this.malfunctionService.getAllByVehicleId(result.vehicleId).subscribe((malfunctions: Malfunction[]) => {
-                            console.log(malfunctions);
                             this.faults = malfunctions;
                           });
                       },
@@ -161,13 +155,13 @@ vehicleType: 'car' | 'bicycle' | 'scooter' = 'car';
   onChangeFileInput(): void {
   const files: { [key: string]: File } = this.fileInput.nativeElement.files;
   this.file = files[0];
-  console.log("Selected file:", this.file);
+
 
   if (this.file) {
     const vehicleId = this.vehicle.id;
     this.imageService.uploadImage('vehicle', vehicleId, this.file).subscribe({
       next: (imageUrl: string) => {
-        console.log("Upload successful:", imageUrl);
+
         this.vehicle.photoUrl = imageUrl;
         this.file = null;
         this.fileInput.nativeElement.value = ''; // Reset file input

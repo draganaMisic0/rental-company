@@ -95,6 +95,24 @@ public class RentalService {
         return rentalMapper.toDto(saved);
     }
 
+    public List<RentalDTO> getLatestRentalsPerVehicle() {
+        List<RentalEntity> foundEntities;
+        try{
+            foundEntities = rentalRepository.findLatestRentalsPerVehicle();
+        }
+        catch(Exception e){
+            foundEntities = List.of();
+        }
+
+        List<RentalDTO> mappedEntities = new ArrayList<>();
+
+        foundEntities.forEach(rentalEntity -> {
+            mappedEntities.add(rentalMapper.toDto(rentalEntity));
+        });
+
+        return mappedEntities;
+    }
+
     public void deleteRental(Integer id) {
         rentalRepository.deleteById(id);
     }

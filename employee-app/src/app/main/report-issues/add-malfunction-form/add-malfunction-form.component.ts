@@ -50,8 +50,7 @@ export class AddMalfunctionFormComponent {
       }
     )
 
-    console.log("DATA:" );
-    console.log(this.data?.vehicleId);
+
   }
 
   onSubmit() {
@@ -68,7 +67,6 @@ export class AddMalfunctionFormComponent {
       output.vehicleId = this.data?.vehicleId;
     }
 
-    console.log(output);
     this.dialogRef.close(output);
   }
   onCancel() {

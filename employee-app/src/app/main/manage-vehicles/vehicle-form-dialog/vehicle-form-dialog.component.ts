@@ -33,7 +33,7 @@ export class VehicleFormDialogComponent implements OnInit {
     private manufacturerService: ManufacturerService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(data);
+
     this.title = `Add New ${this.data.type.slice(0, -1).toUpperCase()}`;
         // base fields
     this.form = this.fb.group({
