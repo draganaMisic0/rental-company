@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
 import java.util.List;
 
 public interface RentalRepository extends JpaRepository<RentalEntity, Integer> {
@@ -20,4 +21,7 @@ public interface RentalRepository extends JpaRepository<RentalEntity, Integer> {
     )
     """)
     List<RentalEntity> findLatestRentalsPerVehicle();
+
+    @Query("SELECT r FROM RentalEntity r WHERE r.dateAndTime BETWEEN :start AND :end ORDER BY r.dateAndTime ASC")
+    List<RentalEntity> findByDateAndTimeBetweenOrderByDateAndTimeAsc(Instant start, Instant end);
 }

@@ -1,1 +1,35 @@
-<p>statistics works!</p>
+<mat-card>
+  <h2>Income per Days</h2>
+
+<mat-form-field appearance="fill">
+  <mat-label>Pick a Month</mat-label>
+  <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" readonly />
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker
+    #picker
+    startView="multi-year"
+    (monthSelected)="onMonthSelected($event, picker)"
+    [startAt]="selectedDate"
+    [touchUi]="true"
+    panelClass="month-picker"
+    >
+  </mat-datepicker>
+</mat-form-field>
+
+
+@if(isBrowser){
+  <div style="display: block;">
+    <canvas baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            chartType="line">
+            [dateClass]="null"
+            [startView]="'multi-year'"
+            [opened]="false"
+            (yearSelected)="noop($event)"
+            panelClass="my-month-picker"
+            > 
+    </canvas>
+  </div>
+  }
+</mat-card>
