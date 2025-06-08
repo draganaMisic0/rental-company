@@ -1,0 +1,5 @@
+car#<model>#<purchasePrice>#<photoUrl>#<status>#<rentalPrice>#<manufacturerId>#<purchaseDate>#<description>
+
+bicycle#<model>#<purchasePrice>#<photoUrl>#<status>#<rentalPrice>#<manufacturerId>#<range>
+
+scooter#<model>#<purchasePrice>#<photoUrl>#<status>#<rentalPrice>#<manufacturerId>#<maxSpeed>

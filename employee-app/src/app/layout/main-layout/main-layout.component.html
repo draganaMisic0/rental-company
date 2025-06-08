@@ -20,49 +20,71 @@
       <div class="sidenav-user">
         <img [src]="user.profilePictureUrl" class="avatar-large" alt="Profile" />
         <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+        <div class="user-name">Logged in as: {{ user.username }}</div>
       </div>
       }
 
       <!-- Navigation Items -->
        <mat-nav-list class="my-nav-list">
-        <a class="nav-list-item" mat-list-item routerLink="/manage-vehicles">
+        @if(user.privileges.includes(Privileges.MANAGE_VEHICLES))
+        {
+          <a class="nav-list-item" mat-list-item routerLink="/manage-vehicles">
           <mat-icon class="nav-link-color nav-icon">directions_car</mat-icon>
           <span class="nav-link-color sidenav-text">Manage Vehicles</span>
-        </a>
-        <a class="nav-list-item" mat-list-item routerLink="/manage-users">
+          </a>
+        }
+        @if(user.privileges.includes(Privileges.MANAGE_USERS)){
+          <a class="nav-list-item" mat-list-item routerLink="/manage-users">
           <mat-icon class="nav-link-color nav-icon">group</mat-icon>
           <span class="nav-link-color sidenav-text">Manage Users</span>
         </a>
-        <a class="nav-list-item" mat-list-item routerLink="/manage-manufacturers">
+        }
+        @if(user.privileges.includes(Privileges.MANAGE_MANUFACTURERS)){
+          <a class="nav-list-item" mat-list-item routerLink="/manage-manufacturers">
           <mat-icon class="nav-link-color nav-icon">build</mat-icon>
           <span class="nav-link-color sidenav-text">Manage Manufacturers</span>
         </a>
-        <a class="nav-list-item" mat-list-item routerLink="/manage-rentals">
-          <mat-icon class="nav-link-color nav-icon">receipt_long</mat-icon>
-          <span class="nav-link-color sidenav-text">View Rentals</span>
-        </a>
-        <a class="nav-list-item" mat-list-item routerLink="/report-issues">
+        }
+        @if(user.privileges.includes(Privileges.MANAGE_RENTALS)){
+          <a class="nav-list-item" mat-list-item routerLink="/manage-rentals">
+            <mat-icon class="nav-link-color nav-icon">receipt_long</mat-icon>
+            <span class="nav-link-color sidenav-text">View Rentals</span>
+          </a>
+        }
+        @if(user.privileges.includes(Privileges.REPORT_ISSUES)){
+          <a class="nav-list-item" mat-list-item routerLink="/report-issues">
           <mat-icon class="nav-link-color nav-icon">report_problem</mat-icon>
           <span class="nav-link-color sidenav-text">Report Issues</span>
         </a>
-        <a class="nav-list-item" mat-list-item routerLink="/statistics">
+        }
+        @if(user.privileges.includes(Privileges.VIEW_STATISTICS))
+        {
+          <a class="nav-list-item" mat-list-item routerLink="/statistics">
           <mat-icon class="nav-link-color nav-icon">bar_chart</mat-icon>
           <span class="nav-link-color sidenav-text">Statistics</span>
         </a>
-        <a class="nav-list-item" mat-list-item routerLink="/vehicles-map-view">
+        }
+        @if(user.privileges.includes(Privileges.VIEW_VEHICLE_MAP))
+        {
+          <a class="nav-list-item" mat-list-item routerLink="/vehicles-map-view">
           <mat-icon class="nav-link-color nav-icon">map</mat-icon>
           <span class="nav-link-color sidenav-text">View Vehicle Map</span>
         </a>
+        }
+        @if(user.privileges.includes(Privileges.SET_RENTAL_PRICES))
+        {
         <a class="nav-list-item" mat-list-item routerLink="/set-rental-prices">
           <mat-icon class="nav-link-color nav-icon">attach_money</mat-icon>
           <span class="nav-link-color sidenav-text">Set Rental Prices</span>
         </a>
-
-        
-        <a class="nav-list-item" mat-list-item (click)="logout()">
-          <mat-icon class="nav-link-color nav-icon">logout</mat-icon>
-          <span class="nav-link-color sidenav-text">Logout</span>
-        </a>
+        }
+        @if(user.privileges.includes(Privileges.LOGOUT))
+        {
+          <a class="nav-list-item" mat-list-item (click)="logout()">
+            <mat-icon class="nav-link-color nav-icon">logout</mat-icon>
+            <span class="nav-link-color sidenav-text">Logout</span>
+          </a>
+        }
         
       </mat-nav-list>
     </mat-sidenav>
@@ -91,8 +113,11 @@
           <img [src]="user.profilePictureUrl" alt="Profile" class="avatar" />
         </div>
         }
-
+        
         <mat-menu #userMenu="matMenu">
+          <div style="text-align: center;">Logged in as:</div>
+          <div style="text-align: center; text-wrap: wrap;">{{this.user.username ?? "Anonymous"}}</div>
+          <hr/>
           <button mat-menu-item (click)="logout()">
             <mat-icon>logout</mat-icon>
             <span>Logout</span>

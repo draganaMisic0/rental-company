@@ -9,6 +9,7 @@ import org.etfbl.iprental.repositories.VehicleRepository;
 import org.etfbl.iprental.utils.mappers.VehicleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -66,4 +67,6 @@ public class VehicleService {
 
         return vehicleMapper.toDto(savedVehicle);
     }
+
+
 }

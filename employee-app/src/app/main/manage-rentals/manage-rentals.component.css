@@ -5,9 +5,7 @@
   box-sizing: border-box;
   background-color: #f4f6f8;
   margin-top: 5vh;
-  padding-top: 5vh;
-  padding-bottom: 5vh;
-    margin-bottom: 5vh;
+  margin-bottom: 5vh;
 }
 
 .viewport {
@@ -16,9 +14,32 @@
   overflow: auto;
 }
 
+.rental-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .rental-card {
-  margin: 0.5rem;
+  flex: 1 1 calc(100% - 2rem);
+  max-width: 100%;
   border-radius: 8px;
+}
+
+@media (min-width: 800px) {
+  .rental-card {
+    flex: 1 1 calc(50% - 2rem);
+    max-width: calc(50% - 2rem);
+  }
+}
+
+@media (min-width: 1300px) {
+  .rental-card {
+    flex: 1 1 calc(33.33% - 2rem);
+    max-width: calc(33.33% - 2rem);
+  }
 }
 
 .rental-section {

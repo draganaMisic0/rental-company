@@ -1,5 +1,7 @@
 <div class="user-management-container">
-  <section class="user-area">
+  @if(this.hasPrivilege(Privileges.MANAGE_EMPLOYEES))
+  {
+    <section class="user-area">
     <h2>Employees</h2>
     <button mat-fab extended  color="primary" (click)="openEmployeeDialog()" style="margin: 20px 5px">
       <mat-icon>add</mat-icon>
@@ -43,6 +45,8 @@
       </mat-table>
     </div>
   </section>
+  }
+  
 
   
   <section class="user-area">

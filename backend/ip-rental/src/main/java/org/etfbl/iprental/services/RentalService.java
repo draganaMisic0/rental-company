@@ -8,6 +8,7 @@ import org.etfbl.iprental.repositories.ClientRepository;
 import org.etfbl.iprental.repositories.RentalRepository;
 import org.etfbl.iprental.repositories.VehicleRepository;
 import org.etfbl.iprental.utils.mappers.RentalMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class RentalService {
     public List<RentalDTO> getAllRentals() {
         return rentalRepository.findAll().stream()
                 .map(rentalMapper::toDto)
+                .sorted((rental1, rental2) -> {return rental2.getDateAndTime().compareTo(rental1.getDateAndTime());})
                 .collect(Collectors.toList());
     }
 
