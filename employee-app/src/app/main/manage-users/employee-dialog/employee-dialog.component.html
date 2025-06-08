@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" required />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" required />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role" required>
+        @for(role of this.roles; track role){
+          <mat-option [value]="role">
+            {{ role | titlecase }}
+          </mat-option>
+        }
+        
+      </mat-select>
+    </mat-form-field>
+    @if(!isEditMode)
+    {
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" required />
+      </mat-form-field>
+    }
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-button type="submit" [disabled]="form.invalid">
+        {{ isEditMode ? 'Save' : 'Add' }}
+      </button>
+    </div>
+    </form>
+</div>
+    

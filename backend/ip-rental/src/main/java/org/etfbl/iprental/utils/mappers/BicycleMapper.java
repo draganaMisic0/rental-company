@@ -2,6 +2,7 @@ package org.etfbl.iprental.utils.mappers;
 
 import org.etfbl.iprental.models.BicycleEntity;
 import org.etfbl.iprental.models.DTO.BicycleDTO;
+import org.etfbl.iprental.models.ManufacturerEntity;
 import org.etfbl.iprental.models.VehicleEntity;
 import org.springframework.stereotype.Component;
 
@@ -26,15 +27,20 @@ public class BicycleMapper {
         vehicle.setId(dto.getId());
         vehicle.setModel(dto.getModel());
         vehicle.setPurchasePrice(dto.getPurchasePrice());
+        vehicle.setRentalPrice(dto.getRentalPrice());
         vehicle.setStatus(dto.getStatus());
         vehicle.setPhotoUrl(dto.getPhotoUrl());
-        vehicle.setRentalPrice(dto.getRentalPrice());
+
+
+        ManufacturerEntity tempEntity = new ManufacturerEntity();
+        tempEntity.setId(dto.getManufacturerId());
+        vehicle.setManufacturer(tempEntity);
+
         return vehicle;
     }
 
     public BicycleEntity toBicycleEntity(BicycleDTO dto) {
         BicycleEntity bicycle = new BicycleEntity();
-        bicycle.setVehicleId(dto.getId());
         bicycle.setRange(dto.getRange());
         return bicycle;
     }

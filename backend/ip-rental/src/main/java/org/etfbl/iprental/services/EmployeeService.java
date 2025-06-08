@@ -2,6 +2,7 @@ package org.etfbl.iprental.services;
 
 import org.etfbl.iprental.models.DTO.EmployeeDTO;
 import org.etfbl.iprental.models.EmployeeEntity;
+import org.etfbl.iprental.models.ManufacturerEntity;
 import org.etfbl.iprental.models.requests.EmployeeRequest;
 import org.etfbl.iprental.repositories.EmployeeRepository;
 import org.etfbl.iprental.utils.mappers.EmployeeMapper;
@@ -53,6 +54,19 @@ public class EmployeeService {
 
         employeeRepository.save(employee);
         return employeeMapper.toDto(employee);
+    }
+
+    public EmployeeDTO updateEmployee(Integer id, EmployeeDTO requestDTO) {
+        EmployeeEntity existing = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+
+        existing.setFirstName(requestDTO.getFirstName());
+        existing.setLastName(requestDTO.getLastName());
+        existing.setUsername(requestDTO.getUsername());
+        existing.setRole(requestDTO.getRole());
+
+        return employeeMapper.toDto(employeeRepository.save(existing));
+
     }
 
     public Boolean verifyEmployeePassword(String username, String rawPassword) {

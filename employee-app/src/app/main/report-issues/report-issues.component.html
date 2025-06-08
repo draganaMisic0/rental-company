@@ -1,0 +1,27 @@
+<div class="container">
+
+    <button mat-fab extended  color="primary" (click)="openAddDialog()" class="add-button" style="margin: 20px 5px">
+      <mat-icon>report</mat-icon>
+        Report Malfunction
+    </button>
+  
+    <mat-divider></mat-divider>
+
+    <section>
+      <mat-paginator
+          [length]="malfunctions.length"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[1, 2, 4, 5]"
+          (page)="onPageChange($event)">
+        </mat-paginator>
+
+        @for(malfunction of this.pagedMalfunctions; track malfunction.id)
+        {
+            <app-malfunction-card
+            [malfunction]="malfunction">
+            </app-malfunction-card>
+        }
+        
+    </section>
+  
+  </div>

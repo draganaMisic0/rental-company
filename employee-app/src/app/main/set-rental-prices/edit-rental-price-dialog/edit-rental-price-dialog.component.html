@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Edit Rental Price</h2>
+    <mat-dialog-content>
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Rental Price</mat-label>
+        <input matInput type="number" [(ngModel)]="data.price">
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions style="justify-content: flex-end;">
+      <button mat-button (click)="dialogRef.close()">Cancel</button>
+      <button mat-flat-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

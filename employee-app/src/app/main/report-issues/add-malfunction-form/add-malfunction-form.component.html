@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>{{ isEditMode ? 'Edit Malfunction Report' : 'Add Malfunction Report' }}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="malfunction-form">
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Vehicle</mat-label>
+      <mat-select formControlName="vehicleId" panelClass="vehicles-select-panel">
+        @for(v of vehicles; track v.id) {
+          <mat-option [value]="v.id">{{ v.model }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+   
+    <mat-form-field appearance="fill">
+      <mat-label>Date & Time</mat-label>
+      <input matInput type="datetime-local" formControlName="dateAndTime" required>
+    </mat-form-field>
+        
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3" required></textarea>
+    </mat-form-field>
+
+    <div mat-dialog-actions class="actions-container">
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-button type="submit" [disabled]="form.invalid">
+        {{ isEditMode ? 'Save' : 'Add' }}
+      </button>
+    </div>
+    
+  </form>
+</div>

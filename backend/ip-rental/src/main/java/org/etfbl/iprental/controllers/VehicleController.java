@@ -2,11 +2,13 @@ package org.etfbl.iprental.controllers;
 
 
 import org.etfbl.iprental.models.DTO.VehicleDTO;
+import org.etfbl.iprental.models.VehicleEntity;
 import org.etfbl.iprental.services.VehicleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -30,9 +32,15 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<VehicleDTO> createVehicle(@RequestBody VehicleDTO vehicleDTO) {
-        VehicleDTO created = vehicleService.addVehicle(vehicleDTO);
+    public ResponseEntity<VehicleEntity> createVehicle(@RequestBody VehicleEntity vehicleInput) {
+        VehicleEntity created = vehicleService.addVehicle(vehicleInput);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/rental-price")
+    public ResponseEntity<VehicleDTO> updateRentalPrice(@PathVariable String id, @RequestBody BigDecimal newPrice) {
+        VehicleDTO updated = vehicleService.updateRentalPrice(id, newPrice);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")

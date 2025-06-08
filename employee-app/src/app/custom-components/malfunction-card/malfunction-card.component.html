@@ -1,0 +1,23 @@
+<mat-card class="malfunction-card">
+  <mat-card-header>
+    <mat-card-title>Vehicle: {{ malfunction.vehicleModel }}</mat-card-title>
+    <mat-card-subtitle>[ Vehicle ID ]: [{{ malfunction.vehicleId }}]</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p><b>Description:</b> {{ malfunction.description }}</p>
+    <p><b>Date & Time:</b> {{ malfunction.dateAndTime | date:'medium' }}</p>
+  </mat-card-content>
+  <mat-card-actions style="align-self: end;">
+    @if(hasEditListener)
+    {
+      <button mat-icon-button color="primary" (click)="onEdit()" aria-label="Edit">
+        <mat-icon>edit</mat-icon>
+      </button>
+    }
+    @if(hasDeleteListener){
+      <button mat-icon-button color="warn" (click)="onDelete()" aria-label="Delete">
+        <mat-icon>delete</mat-icon>
+      </button>
+    }
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,109 @@
+<div class="page-container">
+  <mat-sidenav-container class="main-container">
+
+    <!-- Side Navigation -->
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      [mode]="isSmallScreen ? 'over' : 'side'"
+      [opened]="isSidenavOpen"
+    >
+      <!-- Close button inside drawer on mobile -->
+      @if(isSmallScreen) {
+      <button mat-icon-button class="mobile-close-btn" (click)="toggleSidenav()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+
+      <!-- Small-screen user info at top of drawer -->
+      @if(isSmallScreen && user) {
+      <div class="sidenav-user">
+        <img [src]="user.profilePictureUrl" class="avatar-large" alt="Profile" />
+        <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+      </div>
+      }
+
+      <!-- Navigation Items -->
+       <mat-nav-list class="my-nav-list">
+        <a class="nav-list-item" mat-list-item routerLink="/manage-vehicles">
+          <mat-icon class="nav-link-color nav-icon">directions_car</mat-icon>
+          <span class="nav-link-color sidenav-text">Manage Vehicles</span>
+        </a>
+        <a class="nav-list-item" mat-list-item routerLink="/manage-users">
+          <mat-icon class="nav-link-color nav-icon">group</mat-icon>
+          <span class="nav-link-color sidenav-text">Manage Users</span>
+        </a>
+        <a class="nav-list-item" mat-list-item routerLink="/manage-manufacturers">
+          <mat-icon class="nav-link-color nav-icon">build</mat-icon>
+          <span class="nav-link-color sidenav-text">Manage Manufacturers</span>
+        </a>
+        <a class="nav-list-item" mat-list-item routerLink="/manage-rentals">
+          <mat-icon class="nav-link-color nav-icon">receipt_long</mat-icon>
+          <span class="nav-link-color sidenav-text">View Rentals</span>
+        </a>
+        <a class="nav-list-item" mat-list-item routerLink="/report-issues">
+          <mat-icon class="nav-link-color nav-icon">report_problem</mat-icon>
+          <span class="nav-link-color sidenav-text">Report Issues</span>
+        </a>
+        <a class="nav-list-item" mat-list-item routerLink="/statistics">
+          <mat-icon class="nav-link-color nav-icon">bar_chart</mat-icon>
+          <span class="nav-link-color sidenav-text">Statistics</span>
+        </a>
+        <a class="nav-list-item" mat-list-item routerLink="/vehicles-map-view">
+          <mat-icon class="nav-link-color nav-icon">map</mat-icon>
+          <span class="nav-link-color sidenav-text">View Vehicle Map</span>
+        </a>
+        <a class="nav-list-item" mat-list-item routerLink="/set-rental-prices">
+          <mat-icon class="nav-link-color nav-icon">attach_money</mat-icon>
+          <span class="nav-link-color sidenav-text">Set Rental Prices</span>
+        </a>
+
+        
+        <a class="nav-list-item" mat-list-item (click)="logout()">
+          <mat-icon class="nav-link-color nav-icon">logout</mat-icon>
+          <span class="nav-link-color sidenav-text">Logout</span>
+        </a>
+        
+      </mat-nav-list>
+    </mat-sidenav>
+
+
+    <!-- Main content -->
+    <mat-sidenav-content class="sidenav-content">
+      <!-- Top toolbar -->
+      <mat-toolbar color="primary" class="top-toolbar">
+        <!-- Hamburger menu on small screens only -->
+      
+        <button mat-icon-button (click)="toggleSidenav()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        
+
+        <!-- Page Title -->
+        <span class="app-title">Rental Service</span>
+
+        <span class="spacer"></span>
+
+        <!-- User info on large screens -->
+        @if(!isSmallScreen && user) {
+        <div class="user-info" [matMenuTriggerFor]="userMenu">
+          <span>{{ user.firstName }} {{ user.lastName }}</span>
+          <img [src]="user.profilePictureUrl" alt="Profile" class="avatar" />
+        </div>
+        }
+
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </mat-toolbar>
+
+      <!-- Routed content -->
+      <div class="main-content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

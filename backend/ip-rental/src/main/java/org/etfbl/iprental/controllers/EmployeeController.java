@@ -1,6 +1,7 @@
 package org.etfbl.iprental.controllers;
 
 import org.etfbl.iprental.models.DTO.EmployeeDTO;
+import org.etfbl.iprental.models.ManufacturerEntity;
 import org.etfbl.iprental.models.requests.EmployeeRequest;
 import org.etfbl.iprental.models.requests.LoginRequest;
 import org.etfbl.iprental.services.EmployeeService;
@@ -47,14 +48,33 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.addEmployee(request));
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        boolean success = employeeService.verifyEmployeePassword(loginRequest.getUsername(), loginRequest.getPassword());
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        boolean success = false;
+        try{
+            success = employeeService.verifyEmployeePassword(loginRequest.getUsername(), loginRequest.getPassword());
+        }
+        catch(Exception ex)
+        {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+
+
         if (success) {
-            return ResponseEntity.ok("Login successful");
+            EmployeeDTO foundEmployee = employeeService.getEmployeeByUsername(loginRequest.getUsername());
+            return ResponseEntity.ok(foundEmployee);
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee, @PathVariable Integer id) {
+        if(id == null || id == -1){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(employeeService.updateEmployee(id, employee));
     }
 
     @DeleteMapping("/id/{id}")

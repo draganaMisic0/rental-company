@@ -12,6 +12,7 @@ public class VehicleMapper {
         dto.setId(vehicle.getId());
         dto.setModel(vehicle.getModel());
         dto.setPurchasePrice(vehicle.getPurchasePrice());
+        dto.setStatus(vehicle.getStatus());
         dto.setPhotoUrl(vehicle.getPhotoUrl());
         dto.setRentalPrice(vehicle.getRentalPrice());
         dto.setManufacturerId(vehicle.getManufacturer().getId());
@@ -25,6 +26,7 @@ public class VehicleMapper {
         entity.setPurchasePrice(dto.getPurchasePrice());
         entity.setPhotoUrl(dto.getPhotoUrl());
         entity.setRentalPrice(dto.getRentalPrice());
+        entity.setStatus(dto.getStatus());
         entity.setManufacturer(manufacturer);
         return entity;
     }

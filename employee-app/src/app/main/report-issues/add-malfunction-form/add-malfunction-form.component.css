@@ -1,0 +1,23 @@
+.malfunction-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center the inputs horizontally */
+  gap: 16px; /* spacing between fields */
+}
+
+mat-form-field {
+  width: 100%;
+  max-width: 400px; /* adjust max width as needed */
+}
+
+mat-form-field.full-width {
+  max-width: none; /* make description field fully stretch */
+}
+
+mat-form-field.maximum-height {
+ max-height: 20rem;
+}
+
+.actions-container{
+    align-self: end;
+}

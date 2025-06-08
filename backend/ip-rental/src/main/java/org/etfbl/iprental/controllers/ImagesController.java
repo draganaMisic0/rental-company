@@ -1,6 +1,7 @@
 package org.etfbl.iprental.controllers;
 
 import lombok.RequiredArgsConstructor;
+
 import org.etfbl.iprental.services.ImagesService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -17,6 +18,12 @@ public class ImagesController {
 
     private final ImagesService imagesService;
 
+    /**
+     *
+     * @param type Can be either vehicle or client
+     * @param id of the target entity
+     * @param file The Image itself
+     */
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(
             @RequestParam("type") String type,
@@ -35,6 +42,23 @@ public class ImagesController {
         Resource image = imagesService.loadImage(type, filename);
 
         MediaType contentType = MediaType.IMAGE_JPEG;
+        try {       //  Try reading the file type, if not, then the default file type associated will be JPEG
+            String detectedType = Files.probeContentType(image.getFile().toPath());
+            if (detectedType != null) {
+                contentType = MediaType.parseMediaType(detectedType);
+            }
+        } catch (IOException ignored) {}
+
+        return ResponseEntity.ok()
+                .contentType(contentType)
+                .body(image);
+    }
+
+    @GetMapping("/vehicle/id/{id}")
+    public ResponseEntity<Resource> getVehicleImageById(@PathVariable String id) {
+        Resource image = imagesService.loadVehicleImageById(id);
+
+        MediaType contentType = MediaType.IMAGE_JPEG;
         try {
             String detectedType = Files.probeContentType(image.getFile().toPath());
             if (detectedType != null) {
@@ -45,5 +69,11 @@ public class ImagesController {
         return ResponseEntity.ok()
                 .contentType(contentType)
                 .body(image);
+    }
+
+    @DeleteMapping("/vehicle/{id}")
+    public ResponseEntity<Void> deleteVehicleImage(@PathVariable String id) {
+        imagesService.deleteVehicleImage(id);
+        return ResponseEntity.noContent().build();
     }
 }

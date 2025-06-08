@@ -1,5 +1,6 @@
 package org.etfbl.iprental.services;
 
+import jakarta.transaction.Transactional;
 import org.etfbl.iprental.models.DTO.VehicleDTO;
 import org.etfbl.iprental.models.ManufacturerEntity;
 import org.etfbl.iprental.models.VehicleEntity;
@@ -9,8 +10,8 @@ import org.etfbl.iprental.utils.mappers.VehicleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,14 +42,10 @@ public class VehicleService {
         return vehicleMapper.toDto(vehicle);
     }
 
-    public VehicleDTO addVehicle(VehicleDTO dto) {
-        ManufacturerEntity manufacturer = manufacturerRepo.findById(dto.getManufacturerId())
-                .orElseThrow(() -> new RuntimeException("Manufacturer not found"));
+    @Transactional
+    public VehicleEntity addVehicle(VehicleEntity vehicleInput) {
 
-        VehicleEntity vehicle = vehicleMapper.toEntity(dto, manufacturer);
-
-        vehicleRepo.save(vehicle);
-        return vehicleMapper.toDto(vehicle);
+        return vehicleRepo.save(vehicleInput);
     }
 
     public void deleteVehicle(String id) {
@@ -57,5 +54,16 @@ public class VehicleService {
 
     public void deleteAllVehicles() {
         vehicleRepo.deleteAll();
+    }
+
+    @Transactional
+    public VehicleDTO updateRentalPrice(String id, BigDecimal newPrice) {
+        VehicleEntity vehicle = vehicleRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        vehicle.setRentalPrice(newPrice);
+        VehicleEntity savedVehicle = vehicleRepo.save(vehicle);
+
+        return vehicleMapper.toDto(savedVehicle);
     }
 }

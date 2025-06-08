@@ -2,6 +2,7 @@ package org.etfbl.iprental.controllers;
 
 import org.etfbl.iprental.models.DTO.ClientDTO;
 import org.etfbl.iprental.models.requests.ClientRequest;
+import org.etfbl.iprental.models.requests.ClientStatusChangeRequest;
 import org.etfbl.iprental.models.requests.LoginRequest;
 import org.etfbl.iprental.services.ClientService;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,11 @@ public class ClientController {
     @PostMapping("/login")
     public ResponseEntity<Boolean> loginClient(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(clientService.verifyClientLogin(loginRequest));
+    }
+
+    @PutMapping("/change_status/{id}")
+    public ResponseEntity<ClientDTO> changeClientStatus(@PathVariable Integer id, @RequestBody ClientStatusChangeRequest request) {
+        return ResponseEntity.ok(clientService.changeClientStatus(id, request));
     }
 
     @DeleteMapping("/{id}")
