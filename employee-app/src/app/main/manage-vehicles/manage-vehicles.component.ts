@@ -11,13 +11,15 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { VehicleFormDialogComponent } from './vehicle-form-dialog/vehicle-form-dialog.component';
 import { Router } from '@angular/router';
+import { VehicleService } from '../../services/vehicle.service';
+import { CsvService } from '../../services/csv.service';
 
 @Component({
   selector: 'app-vehicles-management',
   templateUrl: './manage-vehicles.component.html',
   styleUrls: ['./manage-vehicles.component.css'],
   imports: [MaterialModule, MatTableModule, MatPaginatorModule, MatSortModule, CommonModule, FormsModule],
-  providers: [BicycleService, CarService, ScooterService]
+  providers: [BicycleService, CarService, ScooterService, CsvService]
 })
 export class ManageVehiclesComponent implements OnInit {
   router!: Router;
@@ -39,6 +41,7 @@ export class ManageVehiclesComponent implements OnInit {
     private bicycleService: BicycleService,
     private carService:     CarService,
     private scooterService: ScooterService,
+    private csvService: CsvService,
     private dialog: MatDialog,
     
   ) {
@@ -125,11 +128,39 @@ export class ManageVehiclesComponent implements OnInit {
     // navigate to /vehicles/:type/:id
   }
 
-  onFileSelected(evt: any) {
-    // same CSV-upload logic, dispatch to the right bulk-upload endpoint
-  }
+
 
   goToVehicleDetails(vehicle: any) {
     this.router.navigate(['/vehicles/details/', this.selectedType, vehicle.id]);
+  }
+
+  selectedFile: File | null = null;
+  uploadSuccess = false;
+  uploadError = '';
+
+  onFileSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.selectedFile = target.files?.[0] || null;
+    this.uploadSuccess = false;
+    this.uploadError = '';
+  }
+
+  onUpload(): void {
+    if (!this.selectedFile) return;
+
+    this.csvService.bulkUploadVehicles(this.selectedFile).subscribe({
+      next: (message) => {
+        console.log(message);
+        this.uploadSuccess = true;
+        this.uploadError = '';
+      },
+      error: (err) => {
+        console.error(err);
+        this.uploadError = "Upload failed:\n" + err.error.error;
+        //this.uploadError = 'Upload failed. Please check the file and try again.';
+      }
+    });
+
+    
   }
 }

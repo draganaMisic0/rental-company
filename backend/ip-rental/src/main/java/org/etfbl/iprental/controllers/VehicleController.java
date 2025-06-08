@@ -7,6 +7,7 @@ import org.etfbl.iprental.services.VehicleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -54,4 +55,5 @@ public class VehicleController {
         vehicleService.deleteAllVehicles();
         return ResponseEntity.noContent().build();
     }
+
 }

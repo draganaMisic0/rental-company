@@ -14,7 +14,19 @@
       <mat-icon style="margin-right: 10px;">add</mat-icon> Add New
     </button>
 
-    <input type="file" accept=".csv" (change)="onFileSelected($event)" />
+    <div class="bulk-upload-container">
+      <h3>Bulk Upload Vehicles (CSV)</h3>
+
+        <input type="file" accept=".csv" (change)="onFileSelected($event)" />
+        <button [disabled]="!selectedFile" (click)="onUpload()">Upload</button>
+        @if(uploadSuccess)
+        {
+          <p style="color: green;">Upload successful!</p>
+        }
+        @if(uploadError.length > 0){
+          <p style="color: red;">{{ uploadError }}</p>
+        }
+    </div>
   </div>
 
   <mat-divider></mat-divider>
