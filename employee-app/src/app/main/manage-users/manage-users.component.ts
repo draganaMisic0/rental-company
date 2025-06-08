@@ -12,6 +12,7 @@ import { MaterialModule } from '../../material/material-imports';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { Privileges } from '../../layout/main-layout/privileges';
 
 @Component({
   selector: 'app-manage-users',
@@ -30,11 +31,22 @@ export class ManageUsersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  Privileges = Privileges;
+  userPrivileges: string[] = [];
+
   constructor(
     private employeeService: EmployeeService,
     private clientService: ClientService,
     private dialog: MatDialog
-  ) {}
+  ) {
+
+    const storedUser = localStorage.getItem('userData');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      console.log(parsedUser);
+      this.userPrivileges = parsedUser.privileges || [];
+    }
+  }
 
   ngOnInit(): void {
     this.loadEmployees();
@@ -56,6 +68,10 @@ export class ManageUsersComponent implements OnInit {
       this.clientDataSource.paginator = this.paginator;
     }
 
+  }
+
+  hasPrivilege(privilege: Privileges): boolean {
+    return this.userPrivileges.includes(privilege);
   }
 
   loadEmployees(): void {

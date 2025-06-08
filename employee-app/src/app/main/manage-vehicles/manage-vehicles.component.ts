@@ -150,9 +150,9 @@ export class ManageVehiclesComponent implements OnInit {
 
     this.csvService.bulkUploadVehicles(this.selectedFile).subscribe({
       next: (message) => {
-        console.log(message);
         this.uploadSuccess = true;
         this.uploadError = '';
+        this.loadTable();
       },
       error: (err) => {
         console.error(err);

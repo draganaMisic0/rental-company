@@ -4,6 +4,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { Privileges } from './privileges';
 
 @Component({
   selector: 'app-main-layout',
@@ -21,16 +22,30 @@ export class MainLayoutComponent implements OnInit{
    isSidenavOpen = true;
 
   user = {
-    firstName: 'Dragana',
-    lastName: 'Test',
-    username: "dragana_Test",
-    profilePictureUrl: 'https://i.pravatar.cc/40'
+    firstName: 'Ano',
+    lastName: 'Nymous',
+    username: "anon",
+    profilePictureUrl: '/assets/avatar-default-icon-800.png',
+    role: "admin",
+    privileges: ["logout"]
   };
+
+  public Privileges = Privileges;
+
+
 
   constructor(
     private breakpointObserver: BreakpointObserver,
   ){
     this.router = inject(Router);
+    
+    
+    if(localStorage.getItem('userData') != null)
+    {
+      this.user = JSON.parse(localStorage.getItem('userData')!);
+      this.user.profilePictureUrl = '/assets/avatar-default-icon-800.png';
+      
+    }
   }
 
   ngOnInit(): void {
