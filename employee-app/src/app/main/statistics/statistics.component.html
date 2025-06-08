@@ -20,15 +20,20 @@
 @if(isBrowser){
   <div style="display: block;">
     <canvas baseChart
-            [data]="lineChartData"
-            [options]="lineChartOptions"
-            chartType="line">
-            [dateClass]="null"
-            [startView]="'multi-year'"
-            [opened]="false"
-            (yearSelected)="noop($event)"
+            [data]="lineChartData1"
+            [options]="lineChartOptions1"
+            chartType="line"
             panelClass="my-month-picker"
-            > 
+            >
+    </canvas>
+  </div>
+  <div style="display: block;">
+    <canvas baseChart
+            [data]="chartData2"
+            [options]="chartOptions2"
+            chartType="line"
+            panelClass="my-month-picker"
+            >
     </canvas>
   </div>
   }

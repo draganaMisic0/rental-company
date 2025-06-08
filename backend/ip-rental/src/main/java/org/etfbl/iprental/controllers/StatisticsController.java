@@ -43,4 +43,11 @@ public class StatisticsController {
 
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/malfunctions/per-vehicle")
+    public ResponseEntity<Map<String, Integer>> getMalfunctionsPerVehicle() {
+        Map<String, Integer> result = statisticsService.getMalfunctionCountPerVehicle();
+        return ResponseEntity.ok(result);
+    }
+
 }
