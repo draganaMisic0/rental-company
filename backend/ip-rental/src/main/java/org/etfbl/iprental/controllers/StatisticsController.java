@@ -50,4 +50,10 @@ public class StatisticsController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/income/vehicle-type")
+    public ResponseEntity<Map<String, BigDecimal>> getIncomePerVehicleType() {
+        Map<String, BigDecimal> result = statisticsService.getIncomePerVehicleType();
+        return ResponseEntity.ok(result);
+    }
+
 }

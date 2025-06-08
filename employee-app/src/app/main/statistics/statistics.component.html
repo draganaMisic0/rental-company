@@ -18,23 +18,42 @@
 
 
 @if(isBrowser){
-  <div style="display: block;">
+  <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 2rem;">
+  <div style="width: 90%; height: 40vh; min-height: 30vh;">
     <canvas baseChart
-            [data]="lineChartData1"
-            [options]="lineChartOptions1"
-            chartType="line"
-            panelClass="my-month-picker"
-            >
+            #lineChart
+            [data]="chartData1"
+            [options]="chartOptions1"
+            [type]="'line'">
     </canvas>
   </div>
-  <div style="display: block;">
+</div>
+
+<hr style="min-width: 100%;"/>
+
+<div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 2rem;">
+  <div style="width: 90%; height: 40vh; min-height: 30vh;">
     <canvas baseChart
+            #barChart
             [data]="chartData2"
             [options]="chartOptions2"
-            chartType="line"
-            panelClass="my-month-picker"
-            >
+            [type]="'bar'">
     </canvas>
   </div>
+</div>
+
+<hr style="min-width: 100%;"/>
+
+
+<div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 2rem;">
+    <div style="width: 60%; height: 40vh; min-height: 30vh;">
+      <canvas baseChart
+              #doughnutChart
+              [data]="chartData3"
+              [options]="chartOptions3"
+              [type]="'doughnut'">
+      </canvas>
+    </div>
+</div>
   }
 </mat-card>

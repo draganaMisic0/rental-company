@@ -70,4 +70,17 @@ public class StatisticsService {
 
         return modelToCountMap;
     }
+
+    public Map<String, BigDecimal> getIncomePerVehicleType() {
+        List<Object[]> rows = rentalRepository.getIncomeGroupedByVehicleType();
+
+        Map<String, BigDecimal> incomeMap = new HashMap<>();
+        for (Object[] row : rows) {
+            String type = (String) row[0];
+            BigDecimal income = (BigDecimal) row[1];
+            incomeMap.put(type, income);
+        }
+
+        return incomeMap;
+    }
 }

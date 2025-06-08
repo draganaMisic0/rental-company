@@ -1,4 +1,4 @@
-  import { Component, Inject, NgZone, PLATFORM_ID, ViewChild } from '@angular/core';
+  import { AfterViewInit, Component, Inject, NgZone, PLATFORM_ID, QueryList, ViewChild, ViewChildren } from '@angular/core';
   import { StatisticsService } from '../../services/statistics.service';
   import { MaterialModule } from '../../material/material-imports';
   import { ChartConfiguration, ChartType } from 'chart.js';
@@ -20,106 +20,149 @@
       { provide: MAT_DATE_FORMATS, useValue: MONTH_YEAR_FORMATS }
     ]
   })
-  export class StatisticsComponent {
+  export class StatisticsComponent{
     selectedDate = new Date(); // Defaults to current month
 
     @ViewChild('picker') picker!: MatDatepicker<Date>;
-    @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-    
+    @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
 
     
 
-    lineChartData1: ChartConfiguration<'line'>['data'] = {
+    
+
+    chartData1: ChartConfiguration<'line'>['data'] = {
       labels: [],
       datasets: [
         {
           data: [],
-          backgroundColor: '#248532',
-          label: 'Daily Income',
+          label: 'Income',
           fill: true,
-          borderColor: '#3f51b5',
+          tension: 0.2,
+          backgroundColor: '#609F6DA0',
+          borderColor: '#56a991FA',
+          pointBackgroundColor: '#248532',
+          pointRadius: 3,
+          pointHoverRadius: 7,
         }
       ]
 
     };
 
-     chartData2: ChartConfiguration<'line'>['data'] = {
+     chartData2: ChartConfiguration<'bar'>['data'] = {
       labels: [],
       datasets: [
         {
           data: [],
-          backgroundColor: 'purple',
-          label: 'Daily Income',
-          fill: true,
-          borderColor: '#3f51b5',
+          label: 'Malfunctions',
+          backgroundColor: '#9C27B0AE',  
+          borderColor: '#7B1FA2',
+          borderWidth: 2,
+          hoverBackgroundColor: '#7B1FA2', 
+          hoverBorderColor: '#9C27B0FF',
+          barThickness: "flex",
+          borderRadius: 4,
         }
       ]
-
     };
 
-    lineChartOptions1: ChartConfiguration<'line'>['options'] = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: true,
-      position: 'bottom',
-    },
-    title: {
-      display: true,
-      text: 'Daily Income per Month',
-      fullSize: true,
-    },
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      suggestedMax: 200, // or dynamically set this if needed
-      ticks: {
-        stepSize: 20,
-        precision: 0
-      }
-    },
-    x: {
-      ticks: {
-        autoSkip: true,
-        maxRotation: 45,
-        minRotation: 45
-      }
-    }
-  }
-};
+    chartData3: ChartConfiguration<'doughnut'>['data'] = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          label: 'Income by Vehicle Type',
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+          borderColor: '#ffffff',
+          borderWidth: 2
+        }
+      ]
+    };
 
-   chartOptions2: ChartConfiguration<'line'>['options'] = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: true,
-      position: 'bottom',
-    },
-    title: {
-      display: true,
-      text: 'Daily Income per Month',
-      fullSize: true,
-    },
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      suggestedMax: 200, // or dynamically set this if needed
-      ticks: {
-        stepSize: 20,
-        precision: 0
+  chartOptions1: ChartConfiguration<'line'>['options'] = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          text: 'Daily Income per Month',
+          fullSize: true,
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          suggestedMax: 200,
+          ticks: {
+            stepSize: 20,
+            precision: 0
+          }
+        },
+        x: {
+          ticks: {
+            autoSkip: true,
+            maxRotation: 45,
+            minRotation: 45
+          }
+        }
       }
-    },
-    x: {
-      ticks: {
-        autoSkip: true,
-        maxRotation: 45,
-        minRotation: 45
+    };
+
+   chartOptions2: ChartConfiguration<'bar'>['options'] = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          text: 'Malfunctions Per Vehicle',
+          fullSize: true,
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          suggestedMax: 20,
+          ticks: {
+            stepSize: 20,
+            precision: 0
+          }
+        },
+        x: {
+          ticks: {
+            autoSkip: true,
+            maxRotation: 45,
+            minRotation: 45
+          }
+        }
       }
-    }
-  }
-};
+    };
+
+    chartOptions3: ChartConfiguration<'doughnut'>['options'] = {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'right',
+          labels: {
+            boxWidth: 20,
+            padding: 20,
+          }
+        },
+        title: {
+          display: true,
+          text: 'Income Per Vehicle Type',
+          fullSize: true,
+        }
+      },
+      maintainAspectRatio: false // Allow custom height
+    };
 
     isBrowser = false;
 
@@ -134,7 +177,11 @@
 
     ngOnInit(): void {
       this.fetchDataForMonth(this.selectedDate);
+      this.fetchDataForVehicleMalfunctions();
+      this.fetchIncomePerVehicleType();
+
     }
+
 
     onMonthChanged(event: any): void {
       const newDate = new Date(event);
@@ -171,15 +218,61 @@
           this.cdr.detectChanges();
         }
 
-        this.lineChartData1.labels = allDates;
-        this.lineChartData1.datasets[0].data = chartData;
+        this.chartData1.labels = allDates;
+        this.chartData1.datasets[0].data = chartData;
 
         
-          if (this.chart) {
-            setTimeout(() => this.chart?.update(), 200);
-            setTimeout(() => this.cdr.detectChanges(), 201);
+          if (this.charts) {
+            setTimeout(() => this.refreshCharts(), 0);
+            setTimeout(() => this.cdr.detectChanges(), 1);
           }
           
       });
     }
-  }
+
+    private fetchDataForVehicleMalfunctions(): void {
+          this.statisticsService.getVehicleMalfunctions().subscribe((data: Record<string, number>) => {
+            const allCars: string[] = [];
+            const chartData: number[] = [];
+
+            for (const [car, count] of Object.entries(data)) {
+              allCars.push(car);
+              chartData.push(count);   
+            }
+
+        this.chartData2.labels = allCars;
+        this.chartData2.datasets[0].data = chartData;
+
+        if (this.charts) {
+          setTimeout(() => this.refreshCharts(), 0);
+          setTimeout(() => this.cdr.detectChanges(), 1);
+        }
+        });
+      }
+
+      private fetchIncomePerVehicleType(): void {
+        this.statisticsService.getIncomePerVehicleType().subscribe((data: Record<string, number>) => {
+          const vehicleTypes: string[] = [];
+          const incomes: number[] = [];
+
+          for (const [type, income] of Object.entries(data)) {
+            vehicleTypes.push(type);
+            incomes.push(income);
+          }
+
+          this.chartData3.labels = vehicleTypes;
+          this.chartData3.datasets[0].data = incomes;
+
+          if (this.charts) {
+            setTimeout(() => this.refreshCharts(), 0);
+            setTimeout(() => this.cdr.detectChanges(), 1);
+          }
+        });
+      }
+
+      private refreshCharts(){
+        this.charts.forEach((child: BaseChartDirective) => {
+            child.chart?.update();
+          });
+      }
+}

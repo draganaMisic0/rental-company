@@ -18,4 +18,14 @@ export class StatisticsService {
     const end = endDate.toISOString();
     return this.http.get<{ [date: string]: number }>(`${this.apiUrl}/income/daily?startDate=${start}&endDate=${end}`);
   }
+
+  getVehicleMalfunctions(): Observable<{ [date: string]: number }> {
+
+    return this.http.get<{ [date: string]: number }>(`${this.apiUrl}/malfunctions/per-vehicle`);
+  }
+
+  getIncomePerVehicleType(): Observable<{ [type: string]: number }> {
+
+    return this.http.get<{ [type: string]: number }>(`${this.apiUrl}/income/vehicle-type`);
+  }
 }

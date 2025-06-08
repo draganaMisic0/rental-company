@@ -24,4 +24,21 @@ public interface RentalRepository extends JpaRepository<RentalEntity, Integer> {
 
     @Query("SELECT r FROM RentalEntity r WHERE r.dateAndTime BETWEEN :start AND :end ORDER BY r.dateAndTime ASC")
     List<RentalEntity> findByDateAndTimeBetweenOrderByDateAndTimeAsc(Instant start, Instant end);
+
+    @Query(value = """
+    SELECT 
+        CASE 
+            WHEN c.vehicle_id IS NOT NULL THEN 'Cars'
+            WHEN b.vehicle_id IS NOT NULL THEN 'Bicycles'
+            WHEN s.vehicle_id IS NOT NULL THEN 'Scooters'
+            ELSE 'Unknown'
+        END as vehicle_type,
+        SUM(r.total_price) as total_income
+    FROM rental r
+    LEFT JOIN car c ON r.vehicle_id = c.vehicle_id
+    LEFT JOIN bicycle b ON r.vehicle_id = b.vehicle_id
+    LEFT JOIN scooter s ON r.vehicle_id = s.vehicle_id
+    GROUP BY vehicle_type
+    """, nativeQuery = true)
+    List<Object[]> getIncomeGroupedByVehicleType();
 }
