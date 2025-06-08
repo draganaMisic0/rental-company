@@ -1,6 +1,7 @@
 <mat-card class="map-container">
-  <h3>Vehicle Map</h3>
-  <google-map height="35rem" width="75rem" [options]="options">
+  <h2 style="margin-top: 3vh; text-align: center;">Vehicle Map</h2>
+  <div class="map-wrapper">
+  <google-map height="100%" width="100%" [options]="options">
     @for (location of markers; track location; let index = $index) {
     <map-advanced-marker
       #markerElem="mapAdvancedMarker"
@@ -12,4 +13,5 @@
     }
     <map-info-window #infoWindow></map-info-window>
   </google-map>
+  </div>
 </mat-card> 

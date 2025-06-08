@@ -20,4 +20,8 @@ export class VehicleService {
     getById(id: string): Observable<Vehicle> {
       return this.http.get<Vehicle>(`${this.apiUrl}/${id}`);
     }
+
+    updateRentalPrice(id: string, newPrice: number): Observable<Vehicle> {
+      return this.http.put<Vehicle>(`${this.apiUrl}/${id}/rental-price`, newPrice);
+    }
 }

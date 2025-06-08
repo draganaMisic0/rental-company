@@ -10,6 +10,7 @@ import org.etfbl.iprental.utils.mappers.VehicleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,5 +54,16 @@ public class VehicleService {
 
     public void deleteAllVehicles() {
         vehicleRepo.deleteAll();
+    }
+
+    @Transactional
+    public VehicleDTO updateRentalPrice(String id, BigDecimal newPrice) {
+        VehicleEntity vehicle = vehicleRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        vehicle.setRentalPrice(newPrice);
+        VehicleEntity savedVehicle = vehicleRepo.save(vehicle);
+
+        return vehicleMapper.toDto(savedVehicle);
     }
 }
