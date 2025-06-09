@@ -17,7 +17,9 @@ export class PrivilegeGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean | UrlTree {
 
-    // Get user data from localStorage
+    if (typeof window !== 'undefined' && localStorage) {
+
+    
     const userDataJson = localStorage.getItem('userData');
     if (!userDataJson) {
       // No user data, redirect to login
@@ -40,5 +42,7 @@ export class PrivilegeGuard implements CanActivate {
 
     // User lacks privilege: redirect fallback to manage-users page
     return this.router.createUrlTree(['/manage-users']);
+  }
+   return this.router.createUrlTree(['/login']);
   }
 }

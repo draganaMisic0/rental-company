@@ -13,12 +13,13 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Privileges } from '../../layout/main-layout/privileges';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-users',
   templateUrl: './manage-users.component.html',
   styleUrls: ['./manage-users.component.css'],
-  imports: [MaterialModule, MatTableModule, MatPaginatorModule, MatSortModule]
+  imports: [MaterialModule, MatTableModule, MatPaginatorModule, MatSortModule, FormsModule]
 })
 export class ManageUsersComponent implements OnInit {
 
@@ -30,6 +31,15 @@ export class ManageUsersComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+  @ViewChild('employeeSort') employeeSort!: MatSort;
+  @ViewChild('employeePaginator') employeePaginator!: MatPaginator;
+
+  @ViewChild('clientSort') clientSort!: MatSort;
+  @ViewChild('clientPaginator') clientPaginator!: MatPaginator;
+
+  employeeSearchTerm: string = '';
+  clientSearchTerm: string = '';
 
   Privileges = Privileges;
   userPrivileges: string[] = [];
@@ -43,7 +53,6 @@ export class ManageUsersComponent implements OnInit {
     const storedUser = localStorage.getItem('userData');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      console.log(parsedUser);
       this.userPrivileges = parsedUser.privileges || [];
     }
   }
@@ -54,37 +63,45 @@ export class ManageUsersComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.sort && this.employeeDataSource) {
-      this.employeeDataSource.sort = this.sort;
-    }
-    if (this.paginator && this.employeeDataSource) {
-      this.employeeDataSource.paginator = this.paginator;
-    }
-
-    if (this.sort && this.clientDataSource) {
-      this.clientDataSource.sort = this.sort;
-    }
-    if (this.paginator && this.clientDataSource) {
-      this.clientDataSource.paginator = this.paginator;
-    }
-
+  if (this.employeeDataSource) {
+    this.employeeDataSource.sort = this.employeeSort;
+    this.employeeDataSource.paginator = this.employeePaginator;
   }
+
+  if (this.clientDataSource) {
+    this.clientDataSource.sort = this.clientSort;
+    this.clientDataSource.paginator = this.clientPaginator;
+  }
+}
 
   hasPrivilege(privilege: Privileges): boolean {
     return this.userPrivileges.includes(privilege);
   }
 
   loadEmployees(): void {
-    this.employeeService.getAll().subscribe((data: EmployeeData[]) => {
-      this.employeeDataSource = new MatTableDataSource(data);
-    });
-  }
+  this.employeeService.getAll().subscribe((data: EmployeeData[]) => {
+    this.employeeDataSource = new MatTableDataSource(data);
+    this.employeeDataSource.sort = this.employeeSort;
+    this.employeeDataSource.paginator = this.employeePaginator;
+    this.employeeDataSource.filterPredicate = (data: EmployeeData, filter: string) => {
+      const dataStr = `${data.username} ${data.firstName} ${data.lastName} ${data.role}`.toLowerCase();
+      return dataStr.includes(filter);
+    };
+  });
+}
 
-  loadClients(): void {
-    this.clientService.getAll().subscribe((data: ClientData[]) => {
-      this.clientDataSource = new MatTableDataSource(data);
-    });
-  }
+  
+loadClients(): void {
+  this.clientService.getAll().subscribe((data: ClientData[]) => {
+    this.clientDataSource = new MatTableDataSource(data);
+    this.clientDataSource.sort = this.clientSort;
+    this.clientDataSource.paginator = this.clientPaginator;
+    this.clientDataSource.filterPredicate = (data: ClientData, filter: string) => {
+      const dataStr = `${data.username} ${data.firstName} ${data.lastName} ${data.email} ${data.phone} ${data.idNumber} ${data.passportNumber} ${data.citizenship}`.toLowerCase();
+      return dataStr.includes(filter);
+    };
+  });
+}
 
   openEmployeeDialog(): void {
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
@@ -133,5 +150,15 @@ export class ManageUsersComponent implements OnInit {
 
   editClient(id: number) {
     throw new Error('Method not implemented.');
+  }
+
+  applyEmployeeFilter(event: Event): void {
+   const filterValue = (event.target as HTMLInputElement).value;
+    this.employeeDataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  applyClientFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.clientDataSource.filter = filterValue.trim().toLowerCase();
   }
 }

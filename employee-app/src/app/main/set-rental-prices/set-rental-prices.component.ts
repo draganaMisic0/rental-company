@@ -1,23 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Vehicle } from '../../../models/vehicles-data';
 import { EditRentalPriceDialogComponent } from './edit-rental-price-dialog/edit-rental-price-dialog.component';
 import { VehicleService } from '../../services/vehicle.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from '../../material/material-imports';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { FormsModule } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-set-rental-prices',
-  imports: [MaterialModule, MatTableModule],
+  imports: [MaterialModule, MatTableModule, FormsModule],
   templateUrl: './set-rental-prices.component.html',
   styleUrl: './set-rental-prices.component.css'
 })
-export class SetRentalPricesComponent implements OnInit {
+export class SetRentalPricesComponent implements OnInit, AfterViewInit {
   vehicles: Vehicle[] = [];
   pagedVehicles: Vehicle[] = [];
   pageSize = 5;
   currentPage = 0;
+
+  displayedColumns: string[] = ['model', 'id', 'price', 'edit'];
+  dataSource = new MatTableDataSource<Vehicle>();
+  filterText = '';
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private vehicleService: VehicleService,
@@ -28,14 +37,26 @@ export class SetRentalPricesComponent implements OnInit {
     this.loadVehicles();
   }
 
-  loadVehicles() {
+  
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+   loadVehicles() {
     this.vehicleService.getAll().subscribe({
       next: (vehicles) => {
-        this.vehicles = vehicles;
-        this.updatePagedVehicles();
+        this.dataSource.data = vehicles;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       },
       error: (err) => console.error(err)
     });
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
   }
 
   updatePagedVehicles() {
@@ -50,7 +71,7 @@ export class SetRentalPricesComponent implements OnInit {
     this.updatePagedVehicles();
   }
 
-  editPrice(vehicle: Vehicle) {
+   editPrice(vehicle: Vehicle) {
     const dialogRef = this.dialog.open(EditRentalPriceDialogComponent, {
       width: '350px',
       data: { price: vehicle.rentalPrice }
@@ -61,7 +82,7 @@ export class SetRentalPricesComponent implements OnInit {
         this.vehicleService.updateRentalPrice(vehicle.id, newPrice).subscribe({
           next: () => {
             vehicle.rentalPrice = newPrice;
-            this.updatePagedVehicles();
+            this.dataSource.data = [...this.dataSource.data]; // Refresh table
           },
           error: (err) => console.error(err)
         });

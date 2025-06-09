@@ -10,11 +10,18 @@
           id="username"
           formControlName="username"
           class="form-control"
+          (change)="loginFailedMessage = ''"
         />
         @if(username!.invalid && username!.touched)
         {
             <div class="error">
               Username must be at least 3 characters.
+            </div>
+        }
+        @if(loginFailedMessage.length > 0)
+        {
+            <div class="error">
+                {{loginFailedMessage}}
             </div>
         }
     </div>
@@ -27,6 +34,7 @@
           id="password"
           formControlName="password"
           class= "form-control"
+          (change)="loginFailedMessage = ''"
         />
         @if(password!.invalid && password!.touched)
         {

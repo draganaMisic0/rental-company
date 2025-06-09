@@ -58,7 +58,6 @@ public class StatisticsService {
             vehicleIdToCount.put(vehicleId, vehicleIdToCount.getOrDefault(vehicleId, 0) + 1);
         }
 
-        // Create final map: key = model, value = number of malfunctions (even 0)
         Map<String, Integer> modelToCountMap = new TreeMap<>();
         for (VehicleEntity vehicle : allVehicles) {
             String shortId = vehicle.getId().substring(0, 4);

@@ -1,27 +1,37 @@
 <div class="container">
 
-    <button mat-fab extended  color="primary" (click)="openAddDialog()" class="add-button" style="margin: 20px 5px">
+  <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: 20px 5px">
+    <button mat-fab extended color="primary" (click)="openAddDialog()" class="add-button">
       <mat-icon>report</mat-icon>
-        Report Malfunction
+      Report Malfunction
     </button>
-  
-    <mat-divider></mat-divider>
 
-    <section>
-      <mat-paginator
-          [length]="malfunctions.length"
-          [pageSize]="pageSize"
-          [pageSizeOptions]="[1, 2, 4, 5]"
-          (page)="onPageChange($event)">
-        </mat-paginator>
-
-        @for(malfunction of this.pagedMalfunctions; track malfunction.id)
-        {
-            <app-malfunction-card
-            [malfunction]="malfunction">
-            </app-malfunction-card>
-        }
-        
-    </section>
-  
+    <mat-form-field appearance="outline" style="flex-grow: 1; min-width: 250px">
+      <mat-label>Filter by Description</mat-label>
+      <input matInput placeholder="Enter keyword..." [(ngModel)]="filterText" (ngModelChange)="updatePagedMalfunctions()" />
+      @if(filterText)
+      {
+        <button mat-icon-button matSuffix (click)="clearFilter()" aria-label="Clear">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
   </div>
+
+  <mat-divider></mat-divider>
+
+  <section>
+
+    <mat-paginator
+      [length]="filteredMalfunctions.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[3, 5, 10, 20]"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+
+    @for (malfunction of this.pagedMalfunctions; track malfunction.id) {
+      <app-malfunction-card [malfunction]="malfunction"></app-malfunction-card>
+    }
+
+  </section>
+</div>

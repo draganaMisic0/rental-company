@@ -116,7 +116,7 @@
         
         <mat-menu #userMenu="matMenu">
           <div style="text-align: center;">Logged in as:</div>
-          <div style="text-align: center; text-wrap: wrap;">{{this.user.username ?? "Anonymous"}}</div>
+          <div style="text-align: center; text-wrap: wrap;">{{this.user.username}}</div>
           <hr/>
           <button mat-menu-item (click)="logout()">
             <mat-icon>logout</mat-icon>

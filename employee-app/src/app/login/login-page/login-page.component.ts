@@ -17,6 +17,7 @@ export class LoginPageComponent {
   submitButtonDisabled = true;
 
   loginForm: FormGroup;
+  loginFailedMessage: string = "";
 
   constructor(private fb: FormBuilder, 
     private loginService: LoginService,
@@ -92,7 +93,10 @@ export class LoginPageComponent {
         localStorage.setItem('userData', JSON.stringify(data));
         this.router.navigate(['/'])
       },
-      error: (error)=> {console.error(error);}
+      error: (error)=> {
+        this.loginFailedMessage = "Couldn't log you in."
+        console.error(error);
+      }
       }
     );
   }
