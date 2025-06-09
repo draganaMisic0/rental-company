@@ -15,7 +15,7 @@ import { Privileges } from './privileges';
 export class MainLayoutComponent implements OnInit{
 
   isMobile$!: Observable<boolean>;  // Detect screen size for mobile view
-  profilePicUrl: string = 'path/to/profile/pic.jpg';  // Provide your profile image URL
+  profilePicUrl: string = '/assets/avatar-default-icon-800.png';
   private router!: Router;
 
    isSmallScreen = false;

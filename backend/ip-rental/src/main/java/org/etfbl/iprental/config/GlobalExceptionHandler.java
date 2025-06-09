@@ -35,7 +35,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, status);
     }
 
-    // DTO for error response
     public static class ErrorResponse {
         private int status;
         private String error;
@@ -49,7 +48,6 @@ public class GlobalExceptionHandler {
             this.timestamp = timestamp;
         }
 
-        // Getters and setters
         public int getStatus() { return status; }
         public String getError() { return error; }
         public String getMessage() { return message; }

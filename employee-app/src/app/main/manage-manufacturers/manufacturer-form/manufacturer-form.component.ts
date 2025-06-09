@@ -17,9 +17,8 @@ export class ManufacturerFormComponent {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ManufacturerFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Manufacturer | null // Inject the data passed to the dialog
+    @Inject(MAT_DIALOG_DATA) public data: Manufacturer | null 
   ) {
-    // Initialize the form with data if available, otherwise default to empty values
     this.form = this.fb.group({
       name: [this.data?.name || '', Validators.required],
       country: [this.data?.country || '', Validators.required],

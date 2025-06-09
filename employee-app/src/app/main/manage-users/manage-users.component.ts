@@ -43,7 +43,6 @@ export class ManageUsersComponent implements OnInit {
     const storedUser = localStorage.getItem('userData');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      console.log(parsedUser);
       this.userPrivileges = parsedUser.privileges || [];
     }
   }

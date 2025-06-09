@@ -31,7 +31,7 @@ export class AddMalfunctionFormComponent {
     {
       this.isEditMode = true;
     }
-    // Initialize the form with data if available, otherwise default to empty values
+    
     this.form = this.fb.group({
       description: [this.data?.description || '', Validators.required],
       dateAndTime: [this.data?.dateAndTime || '', Validators.required],

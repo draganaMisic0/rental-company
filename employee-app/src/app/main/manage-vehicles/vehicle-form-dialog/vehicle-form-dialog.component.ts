@@ -35,7 +35,7 @@ export class VehicleFormDialogComponent implements OnInit {
   ) {
 
     this.title = `Add New ${this.data.type.slice(0, -1).toUpperCase()}`;
-        // base fields
+
     this.form = this.fb.group({
       model: [this.data.vehicle?.model || '', Validators.required],
       purchasePrice: [this.data.vehicle?.purchasePrice || '', [Validators.required, Validators.min(0)]],
@@ -50,7 +50,7 @@ export class VehicleFormDialogComponent implements OnInit {
 
   ngOnInit() {
     
-    // type-specific
+    
     switch (this.data.type) {
       case 'bicycles':
         this.form.addControl('range', this.fb.control(
@@ -77,7 +77,7 @@ export class VehicleFormDialogComponent implements OnInit {
 
   submit() {
     if (this.form.invalid) { return; }
-    // keep ID out for create, preserve for edit
+   
     const output = {
       ...this.data.vehicle,
       ...this.form.value};

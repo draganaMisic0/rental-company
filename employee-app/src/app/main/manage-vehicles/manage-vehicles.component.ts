@@ -24,15 +24,12 @@ import { CsvService } from '../../services/csv.service';
 export class ManageVehiclesComponent implements OnInit {
   router!: Router;
   
-  // which type is selected
   selectedType: 'bicycles' | 'cars' | 'scooters' = 'cars';
 
-  // three data sources
   dataSourceBicycles = new MatTableDataSource<any>([]);
   dataSourceCars     = new MatTableDataSource<any>([]);
   dataSourceScooters = new MatTableDataSource<any>([]);
 
-  // three column definitions
   bicycleColumns  = ['model', 'purchasePrice', 'range', 'actions'];
   carColumns      = ['model', 'purchasePrice', 'purchaseDate', 'description', 'actions'];
   scooterColumns  = ['model', 'purchasePrice', 'maxSpeed', 'actions'];
@@ -109,7 +106,7 @@ export class ManageVehiclesComponent implements OnInit {
                   );
                 break;
             }
-            //this.manufacturerService.add(result).subscribe(() => this.loadManufacturers());
+           
           }
         });
   }

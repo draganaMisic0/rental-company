@@ -44,7 +44,7 @@ export class ReportIssuesComponent implements OnInit{
             this.malfunctions = malfunctions;
             this.updatePagedMalfunctions();
           },
-          error: (error) => {console.log(error);}
+          error: (error) => {console.error(error);}
         }
       )
     }

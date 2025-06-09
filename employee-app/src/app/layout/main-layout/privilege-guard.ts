@@ -17,7 +17,7 @@ export class PrivilegeGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean | UrlTree {
 
-    // Get user data from localStorage
+
     const userDataJson = localStorage.getItem('userData');
     if (!userDataJson) {
       // No user data, redirect to login
