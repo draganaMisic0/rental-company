@@ -6,10 +6,11 @@ import { MalfunctionComponentsModule } from '../../custom-components/malfunction
 import { MaterialModule } from '../../material/material-imports';
 import { AddMalfunctionFormComponent } from './add-malfunction-form/add-malfunction-form.component';
 import { PageEvent } from '@angular/material/paginator';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-report-issues',
-  imports: [MalfunctionComponentsModule, MaterialModule],
+  imports: [MalfunctionComponentsModule, MaterialModule, FormsModule],
   templateUrl: './report-issues.component.html',
   styleUrl: './report-issues.component.css',
   providers: [MalfunctionService]
@@ -18,8 +19,11 @@ export class ReportIssuesComponent implements OnInit{
 
   malfunctions: Malfunction[] = [];
   pagedMalfunctions: Malfunction[] = [];
-  pageSize: number = 2;
+  filteredMalfunctions: Malfunction[] = [];
+  pageSize: number = 5;
   currentPage: number = 0;
+
+  filterText: string = '';
 
   constructor(
     private malfunctionService: MalfunctionService,
@@ -74,10 +78,23 @@ export class ReportIssuesComponent implements OnInit{
   }
 
   updatePagedMalfunctions() {
+    // Filter
+    const lowerText = this.filterText.trim().toLowerCase();
+    this.filteredMalfunctions = this.malfunctions.filter(m =>
+      m.description?.toLowerCase().includes(lowerText)
+    );
+
+    // Paginate
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedMalfunctions = this.malfunctions.slice(startIndex, endIndex);
+    this.pagedMalfunctions = this.filteredMalfunctions.slice(startIndex, endIndex);
   }
+
+  clearFilter() {
+    this.filterText = '';
+    this.updatePagedMalfunctions();
+  }
+  
   onEditMalfunction(id: number){
     console.log(`EDIT (ID): ${id}`);
   }

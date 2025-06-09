@@ -1,23 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Manufacturer } from '../../../models/manufacturer-data';
 import { ManufacturerService } from '../../services/manufacturer.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ManufacturerFormComponent } from './manufacturer-form/manufacturer-form.component';
-import { MaterialModule } from '../../material/material-imports';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MaterialModule } from '../../material/material-imports';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-manufacturers',
   templateUrl: './manage-manufacturers.component.html',
-  imports: [MaterialModule, MatTableModule, MatPaginatorModule, MatSortModule],
+  imports: [MaterialModule, MatTableModule, MatPaginatorModule, MatSortModule, FormsModule],
   providers: [ManufacturerService]
 })
-export class ManageManufacturersComponent implements OnInit {
-  manufacturers: Manufacturer[] = [];
+export class ManageManufacturersComponent implements OnInit, AfterViewInit {
+
   displayedColumns: string[] = ['name', 'country', 'address', 'phone', 'fax', 'email', 'actions'];
-  dataSource!: MatTableDataSource<Manufacturer>;
+  dataSource: MatTableDataSource<Manufacturer> = new MatTableDataSource<Manufacturer>();
+  filterText: string = '';
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -32,27 +34,19 @@ export class ManageManufacturersComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (this.sort && this.dataSource) {
-      this.dataSource.sort = this.sort;
-    }
-    if (this.paginator && this.dataSource) {
-      this.dataSource.paginator = this.paginator;
-    }
-    
     
   }
 
- 
   loadManufacturers(): void {
-    this.manufacturerService.getAll().subscribe((manufacturers: Manufacturer[]) => {
-      this.dataSource = new MatTableDataSource(manufacturers);
-    });
-  }
+  this.manufacturerService.getAll().subscribe((manufacturers: Manufacturer[]) => {
+    this.dataSource = new MatTableDataSource(manufacturers);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  });
+}
 
   deleteManufacturer(id: number): void {
-    this.manufacturerService.delete(id).subscribe(() => {
-      this.loadManufacturers();
-    });
+    this.manufacturerService.delete(id).subscribe(() => this.loadManufacturers());
   }
 
   openAddDialog() {
@@ -72,7 +66,7 @@ export class ManageManufacturersComponent implements OnInit {
       width: '25vw',
       data: manufacturer
     });
-  
+
     dialogRef.afterClosed().subscribe((result: Manufacturer) => {
       if (result) {
         this.manufacturerService.update(manufacturer.id!, result).subscribe(() => this.loadManufacturers());
@@ -80,4 +74,8 @@ export class ManageManufacturersComponent implements OnInit {
     });
   }
 
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
 }

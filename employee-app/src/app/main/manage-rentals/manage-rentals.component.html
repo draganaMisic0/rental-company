@@ -1,10 +1,18 @@
 <h2 style="text-align: center;">Rentals History</h2>
+
+<div style="text-align: center; margin-bottom: 20px;">
+  <mat-form-field appearance="outline" style="width: 300px; margin-right: 10px;">
+    <mat-label>Search rentals...</mat-label>
+    <input matInput [(ngModel)]="filterQuery" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="applyFilter()">Filter</button>
+</div>
 <div class="rental-container mat-typography">
   @if(groupedRentals.length > 0) {
-    <cdk-virtual-scroll-viewport itemSize="250" class="viewport">
-      <div *cdkVirtualFor="let row of groupedRentals" class="rental-row">
-        @for(rental of row; track rental.id){
-          <mat-card class="rental-card">
+  <cdk-virtual-scroll-viewport itemSize="250" class="viewport">
+    <div *cdkVirtualFor="let row of groupedRentals" class="rental-row">
+      @for(rental of row; track rental.id){
+        <mat-card class="rental-card">
           <mat-card-header>
             <mat-card-title>
               <mat-icon class="icon">commute</mat-icon>
@@ -38,11 +46,10 @@
             </div>
           </mat-card-content>
         </mat-card>
-        }
-        
-      </div>
-    </cdk-virtual-scroll-viewport>
-  } @else {
-    <h3>No Rentals Found!</h3>
-  }
+      }
+    </div>
+  </cdk-virtual-scroll-viewport>
+} @else {
+  <h3>No Rentals Found!</h3>
+}
 </div>
