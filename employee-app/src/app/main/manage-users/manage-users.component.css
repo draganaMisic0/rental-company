@@ -15,3 +15,11 @@
     max-height: 300px;
     overflow-y: auto;
   }
+
+mat-paginator {
+  margin-top: 10px;
+}
+
+.search-input{
+  margin-left: 2vw;
+}

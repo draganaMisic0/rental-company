@@ -7,7 +7,13 @@
       <mat-icon>add</mat-icon>
         Add Employee
     </button>
+    <mat-form-field appearance="outline" class="search-input">
+      <mat-label>Search Employees</mat-label>
+      <input matInput (input)="applyEmployeeFilter($event)" placeholder="Search..." [(ngModel)]="employeeSearchTerm">
+    </mat-form-field>
+    
     <div class="table-container">
+      <mat-paginator #employeePaginator [pageSize]="10" [pageSizeOptions]="[1, 5, 10, 20]"></mat-paginator>
       <mat-table [dataSource]="employeeDataSource" matSort class="mat-elevation-z8">
        
         <ng-container matColumnDef="username">
@@ -51,7 +57,13 @@
   
   <section class="user-area">
     <h2>Clients</h2>
+    
+  <mat-form-field appearance="outline" class="search-input">
+    <mat-label>Search Clients</mat-label>
+    <input matInput (input)="applyClientFilter($event)" placeholder="Search..." [(ngModel)]="clientSearchTerm">
+  </mat-form-field>
     <div class="table-container">
+      <mat-paginator #clientPaginator [pageSize]="10" [pageSizeOptions]="[1, 5, 10, 20]"></mat-paginator>
       <mat-table [dataSource]="clientDataSource" matSort class="mat-elevation-z8">
        
         <ng-container matColumnDef="username">
